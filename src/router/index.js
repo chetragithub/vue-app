@@ -136,7 +136,7 @@ const routes = [
 
 const router = createRouter({
   // mode: 'history',
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory('https://incandescent-marigold-be2724.netlify.app/'),
   // base: 'https://incandescent-marigold-be2724.netlify.app',
   routes,
 });
