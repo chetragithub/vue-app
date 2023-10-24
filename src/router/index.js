@@ -1,5 +1,5 @@
 // Reference from: https://router.vuejs.org/guide/advanced/navigation-guards.html
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createMemoryHistory } from "vue-router";
 import { useCookieStore } from "@/stores/cookie";
 
 const loginRequired = async (to, from, next) => {
@@ -136,8 +136,8 @@ const routes = [
 
 const router = createRouter({
   // mode: 'history',
-  history: createWebHistory('https://incandescent-marigold-be2724.netlify.app/'),
-  // base: 'https://incandescent-marigold-be2724.netlify.app',
+  history: createMemoryHistory(),
+  // base: 'http://localhost:8080/',
   routes,
 });
 
