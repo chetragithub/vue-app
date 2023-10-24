@@ -12,7 +12,8 @@ http.interceptors.request.use((config) => {
   const { getCookie } = useCookieStore();
   const token = getCookie("user_token");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    // config.headers.Authorization = `Bearer ${token}`;
+    config.headers["x-access-token"] = token;
   }
   config.headers["Content-Type"] = "application/json";
   return config;

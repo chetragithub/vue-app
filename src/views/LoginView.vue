@@ -64,23 +64,23 @@ const v$ = useVuelidate(rules, credentials);
 const onSubmit = async () => {
   if (v$.value.$errors.length === 0) {
     try {
-      const res = await http.post("login", credentials);
+      const res = await http.post("auth/login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
-      cookieStore.setCookie("user_role", res.data.user.role.name, 30);
+      cookieStore.setCookie("user_role", res.data.user.role_id.name, 30);
       let user = {
-        user_id: res.data.user.user_id,
+        user_id: res.data.user._id,
         first_name: res.data.user.first_name,
         last_name: res.data.user.last_name,
         gender: res.data.user.gender,
         email: res.data.user.email,
         image: res.data.user.image,
-        store: res.data.user.store,
+        store: res.data.user.store_id,
       };
       cookieStore.setCookie("user", JSON.stringify(user), 30);
-      if (res.data.user.role.name === "restaurant_owner") {
+      if (res.data.user.role_id.name === "restaurant_owner") {
         router.push("/");
       } else {
-        router.push(`/${res.data.user.role.name}`);
+        router.push(`/${res.data.user.role_id.name}`);
       }
     } catch (err) {
       if (err.response.data.message) {

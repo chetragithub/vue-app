@@ -28,14 +28,14 @@
       <main class="d-flex flex-column mt-1 mr-2">
         <!-- list table -->
         <div class="grid-container mt-2 gap-2" v-if="tables.length > 0">
-          <table-card v-for="table in tables" :key="table.table_id" :table="table">
+          <table-card v-for="table in tables" :key="table._id" :table="table">
             <div class="d-flex justify-space-between align-center mt-2">
               <!-- close dialo delete table -->
-              <dark-button @click="onEdit(table)">
+              <dark-button @click="onEdit(table._id)">
                 <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                 Edit
               </dark-button>
-              <danger-button @click="onDelete(table)">
+              <danger-button @click="onDelete(table._id)">
                 <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                 Delete
               </danger-button>
@@ -102,7 +102,7 @@ const onDelete = (id) => {
 };
 const deleted = () => {
   if (tableId.value != null) {
-    const id = tableId.value["table_id"];
+    const id = tableId.value;
     deleteTable(id);
   }
   dialog.value = false;
