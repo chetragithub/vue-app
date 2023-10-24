@@ -90,8 +90,5 @@ app
   .use(OneSignal, oneSignalConfig)
   .use(vuetify)
   .use(router)
-  .use(pinia);
-
-router.isReady().then(() => {
-  app.mount("#app");
-});
+  .use(pinia)
+  .mount("#app");
