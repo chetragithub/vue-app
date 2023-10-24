@@ -85,9 +85,13 @@ app.component("uploading-progress", UploadingProgress);
 firebase.initializeApp(firebaseConfig);
 
 // App uses
-app.use(pinia)
-  .use(router)
+app
   .use(VueApexCharts)
   .use(OneSignal, oneSignalConfig)
   .use(vuetify)
-  .mount('#app');
+  .use(router)
+  .use(pinia);
+
+router.isReady().then(() => {
+  app.mount("#app");
+});

@@ -1,5 +1,5 @@
 // Reference from: https://router.vuejs.org/guide/advanced/navigation-guards.html
-import { createRouter, createMemoryHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { useCookieStore } from "@/stores/cookie";
 
 const loginRequired = async (to, from, next) => {
@@ -136,7 +136,7 @@ const routes = [
 
 const router = createRouter({
   // mode: 'history',
-  history: createMemoryHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   // base: 'http://localhost:8080/',
   routes,
 });
