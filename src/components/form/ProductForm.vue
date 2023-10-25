@@ -18,7 +18,7 @@
               @input="vp$.product_code.$touch; errProductCode = '';" @blur="vp$.product_code.$touch"></v-text-field>
 
             <v-select v-model="productInForm.category_id" required class="mt-2 text-black" variant="outlined"
-              label="Category" :items="categories" :item-title="'name'" :item-value="'category_id'" density="compact"
+              label="Category" :items="categories" :item-title="'name'" :item-value="'_id'" density="compact"
               :error-messages="vp$.category_id.$errors.map((e) => e.$message)" @change="vp$.category_id.$touch"
               @blur="vp$.category_id.$touch">
             </v-select>
@@ -116,25 +116,25 @@
   </base-dialog>
 
   <!-- Create product customize success -->
-  <base-alert v-model="createSuccess">
+  <base-alert v-model="createSuccess" @hide-snackbar="createSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Created customize succeefully!</h5>
   </base-alert>
 
   <!-- Update product customize success -->
-  <base-alert v-model="updateSuccess">
+  <base-alert v-model="updateSuccess" @hide-snackbar="updateSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Updated customize succeefully!</h5>
   </base-alert>
 
   <!-- Delete product customize success -->
-  <base-alert v-model="deleteSuccess">
+  <base-alert v-model="deleteSuccess" @hide-snackbar="deleteSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Deleted customize succeefully!</h5>
   </base-alert>
 
   <!-- Alert select image -->
-  <base-alert v-model="isNoImage">
+  <base-alert v-model="isNoImage" @hide-snackbar="isNoImage = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
     <h5 class="mt-2">Please upload image!</h5>
   </base-alert>

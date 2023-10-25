@@ -72,6 +72,7 @@ export const useProductStore = defineStore("product", {
       }
     },
     async storeProduct(product) {
+      console.log(product);
       try {
         const res = await http.post('products', product);
         if (res.data.success) {
@@ -86,18 +87,21 @@ export const useProductStore = defineStore("product", {
       }
     },
     async updateProduct(product) {
-      console.log(product);
+      // console.log(product);
       try {
-        const res = await http.put(`products/${product.product_id}`, product);
+        product.product_customizes = product.product_customizes.map(({ _id, price, size }) => 
+         ({ product_customize_id: _id, price, size }));
+        const { name, description, product_code, image, is_active, category_id, product_customizes } = product;
+        const res = await http.put(`products/${product.product_id}`, { name, description, product_code, image, is_active, category_id, product_customizes });
         if (res.data.success) {
           this.updateSuccess = true;
           this.errProductCode = '';
           this.getProducts();
         }
       } catch (err) {
-        if (err.response.data.message.product_code) {
-          this.errProductCode = 'Code already exists.';
-        }
+        // if (err.response.data.message.product_code) {
+        //   this.errProductCode = 'Code already exists.';
+        // }
         console.log(err.response.data);
       }
     },

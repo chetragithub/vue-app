@@ -17,12 +17,12 @@
         <div class="d-flex flex-column mr-2 w-100">
           <v-tabs v-model="filterValue" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
             <v-tab :value="'all'">All</v-tab>
-            <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{
+            <v-tab v-for="category in categories" :key="category._id" :value="category._id">{{
               category.name }}</v-tab>
           </v-tabs>
           <!-- List products card -->
           <div v-if="products.length > 0" class="grid-container mt-2 gap-2">
-            <product-res-owner-card v-for="product in products" :key="product.product_id" :product="product">
+            <product-res-owner-card v-for="product in products" :key="product._id" :product="product">
               <div class="d-flex justify-space-between align-center mt-2">
                 <dark-button @click="onEdit(product)">
                   <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
@@ -30,7 +30,7 @@
                 </dark-button>
                 <danger-button @click="
                   isDelete = true;
-                deleteId = product.product_id;
+                  deleteId = product._id;
                 ">
                   <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                   Delete
@@ -80,19 +80,19 @@
   </base-dialog>
 
   <!-- Create new product success -->
-  <base-alert v-model="success">
+  <base-alert v-model="success" @hide-snackbar="success = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Created product succeefully!</h5>
   </base-alert>
 
   <!-- Update the product success -->
-  <base-alert v-model="updateSuccess">
+  <base-alert v-model="updateSuccess" @hide-snackbar="updateSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Updated product succeefully!</h5>
   </base-alert>
 
   <!-- Delete the product success -->
-  <base-alert v-model="deleteSuccess">
+  <base-alert v-model="deleteSuccess" @hide-snackbar="deleteSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Deleted product succeefully!</h5>
   </base-alert>
@@ -147,8 +147,10 @@ let deleted = async () => {
 };
 // On click edit the product
 const onEdit = (product) => {
-  product.category_id = product.category.category_id;
-  productInForm.value = { ...product };
+  const productEdit = { ...product };
+  productEdit.category_id = product.category_id._id;
+  productEdit.product_id = product._id;
+  productInForm.value = productEdit;
   dialog.value = true;
 };
 

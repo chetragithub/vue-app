@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-import http from "@/http-common";
+// import http from "@/http-common";
 import { defineProps, ref } from "vue";
 import { useCookieStore } from "@/stores/cookie";
 import { useRouter } from "vue-router";
@@ -101,7 +101,7 @@ const router = useRouter();
 // Method
 const logout = async () => {
   try {
-    await http.post("logout");
+    // await http.post("logout");
     isLogout.value = false;
     removeCookie("user_token");
     removeCookie("user_role");

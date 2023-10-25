@@ -1,18 +1,18 @@
 <template>
   <!-- create alert -->
-  <base-alert v-model="createSuccess">
+  <base-alert v-model="createSuccess" @hide-snackbar="createSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Created category successfully!</h5>
   </base-alert>
 
   <!-- update category successfully -->
-  <base-alert v-model="updateSuccess">
+  <base-alert v-model="updateSuccess" @hide-snackbar="updateSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Updated category succeefully!</h5>
   </base-alert>
 
   <!-- delete alert -->
-  <base-alert v-model="deleteSuccess">
+  <base-alert v-model="deleteSuccess" @hide-snackbar="deleteSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Deleted category successfully!</h5>
   </base-alert>
@@ -28,7 +28,7 @@
       <main class="d-flex flex-column mt-2">
         <!-- list category -->
         <div class="grid-container mt-1 mr-2 gap-2" v-if="categories.length > 0">
-          <category-card v-for="category in categories" :key="category.category_id" :category="category">
+          <category-card v-for="category in categories" :key="category._id" :category="category">
             <div class="d-flex justify-space-between align-center mt-2">
               <!-- close dialo delete category -->
               <dark-button @click="onEdit(category)">
@@ -37,7 +37,7 @@
               </dark-button>
 
               <!-- delete category -->
-              <danger-button @click="onDelete(category)">
+              <danger-button @click="onDelete(category._id)">
                 <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
                 Delete
               </danger-button>
@@ -112,7 +112,7 @@ let onDelete = (id) => {
 
 const deleted = () => {
   if (categoryId.value !== null) {
-    const id = categoryId.value["category_id"];
+    const id = categoryId.value;
     deleteCategory(id);
   }
   dialog.value = false;
@@ -120,7 +120,8 @@ const deleted = () => {
 
 // Edit category
 const onEdit = (category) => {
-  categoryInForm.value = { ...category };
+  const { _id, name } = category;
+  categoryInForm.value = { category_id: _id, name };
   isShowForm.value = true;
 };
 

@@ -37,9 +37,13 @@ import SummaryComponent from "@/components/summary/SummaryComponent";
 import UploadingProgress from "@/components/progress/UploadingProgress";
 import CategoryCard from "@/components/widget/card/CategoryCard";
 import TableCard from "@/components/widget/card/TableCard";
+import AppDelay from "@/lib/components/AppDelay";
 // App
 const app = createApp(App);
 const pinia = createPinia();
+
+// Libs
+app.component("app-delay", AppDelay);
 
 // Cards
 app.component("product-res-owner-card", ProductResOwnerCard);

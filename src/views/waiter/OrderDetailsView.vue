@@ -78,9 +78,9 @@ const confirm = async () => {
     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     let dateTime = date + ' ' + time;
     let newOrder = {
-        table_id: table.table_id,
+        table_id: table._id,
         datetime: dateTime,
-        product_customizes: customizes
+        product_customizes: customizes.map(({ product_customize_id, quantity }) => ({ product_customize_id, quantity }))
     };
     await storeOrder(newOrder);
     success.value = true;

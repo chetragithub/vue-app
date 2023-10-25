@@ -27,7 +27,7 @@
 
       <!-- List products -->
       <div v-if="products.length > 0" class="grid-container gap-2 mx-2 mt-2">
-        <product-card v-for="product in products" :key="product.id" :product="product"
+        <product-card v-for="product in products" :key="product._id" :product="product"
           @on-customize="onCustomize"></product-card>
       </div>
 
@@ -180,13 +180,13 @@
   </base-dialog>
 
   <!-- Alert please selecet table -->
-  <base-alert v-model="tableAlert">
+  <base-alert v-model="tableAlert" @hide-snackbar="tableAlert = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
     <h5 class="mt-2">Please select table.</h5>
   </base-alert>
 
   <!-- Alert please selecet food -->
-  <base-alert v-model="foodAlert">
+  <base-alert v-model="foodAlert" @hide-snackbar="foodAlert = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
     <h5 class="mt-2">Please select food.</h5>
   </base-alert>
@@ -274,6 +274,9 @@ const totalFoods = computed(() => {
 });
 // Add product customize
 const addCustomize = (product, customize) => {
+  if (customize._id) {
+    customize.product_customize_id = customize._id
+  }
   const customizes = localStorage.getItem("customizes_selectd")
     ? JSON.parse(localStorage.getItem("customizes_selectd"))
     : [];

@@ -1,18 +1,18 @@
 <template>
   <!-- create alet -->
-  <base-alert v-model="createSuccess">
+  <base-alert v-model="createSuccess" @hide-snackbar="createSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Created table successfully!</h5>
   </base-alert>
 
   <!-- update table successfully -->
-  <base-alert v-model="updateSuccess">
+  <base-alert v-model="updateSuccess" @hide-snackbar="updateSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Updated table succeefully!</h5>
   </base-alert>
 
   <!-- delete alert -->
-  <base-alert v-model="deleteSuccess">
+  <base-alert v-model="deleteSuccess" @hide-snackbar="deleteSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Deleted table successfully!</h5>
   </base-alert>
@@ -31,7 +31,7 @@
           <table-card v-for="table in tables" :key="table._id" :table="table">
             <div class="d-flex justify-space-between align-center mt-2">
               <!-- close dialo delete table -->
-              <dark-button @click="onEdit(table._id)">
+              <dark-button @click="onEdit(table)">
                 <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
                 Edit
               </dark-button>
@@ -109,7 +109,8 @@ const deleted = () => {
 };
 
 const onEdit = (table) => {
-  tableInForm.value = { ...table };
+  const { _id, table_number } = table;
+  tableInForm.value = { table_id: _id, table_number };
   isShowForm.value = true;
 };
 

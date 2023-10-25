@@ -1,5 +1,6 @@
 <template>
   <router-view></router-view>
+  <app-delay />
 </template>
 
 <script setup>
