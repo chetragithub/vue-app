@@ -1,2 +1,2 @@
-const socket = new WebSocket("ws://my-app-aqw2.onrender.com");
+const socket = new WebSocket("ws://localhost:3000");
 export default socket;
