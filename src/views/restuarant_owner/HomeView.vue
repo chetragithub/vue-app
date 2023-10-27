@@ -6,7 +6,7 @@
     <header-component title="Home" />
 
     <v-main class="grid-container mx-2 mt-2 gap-2">
-      <div class="bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
+      <div @click="to('product')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
         <div class="w-50 d-flex flex-column align-center  card-summary py-2 m-2 rounded-lg text-center">
           <v-icon icon="mdi-cube-outline" color="white" size="x-large"></v-icon>
           <span class="mt-1">Product</span>
@@ -16,7 +16,7 @@
           <h5 v-else class="mt-2">{{ products.length }} item</h5>
         </div>
       </div>
-      <div class="bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
+      <div @click="to('category')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
         <div class="w-50 d-flex flex-column align-center  card-summary py-2 m-2 rounded-lg text-center">
           <v-icon icon="mdi-shape-plus-outline" color="white" size="x-large"></v-icon>
           <span class="mt-1">Category</span>
@@ -26,7 +26,7 @@
           <h5 v-else class="mt-2">{{ categories.length }} item</h5>
         </div>
       </div>
-      <div class="bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
+      <div @click="to('table')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
         <div class="w-50 d-flex flex-column align-center  card-summary py-2 m-2 rounded-lg text-center">
           <v-icon icon="mdi-table-chair" color="white" size="x-large"></v-icon>
           <span class="mt-1">Table</span>
@@ -36,7 +36,7 @@
           <h5 v-else class="mt-2">{{ tables.length }} item</h5>
         </div>
       </div>
-      <div class="bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
+      <div @click="to('staff')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
         <div class="w-50 d-flex flex-column align-center  card-summary py-2 m-2 rounded-lg text-center">
           <v-icon icon="mdi-account-group-outline" color="white" size="x-large"></v-icon>
           <span class="mt-1">Staff</span>
@@ -58,6 +58,7 @@ import { useTableStore } from "@/stores/table";
 import { useUserStore } from "@/stores/user";
 import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
+import router from "@/router/index";
 
 const { getProducts } = useProductStore();
 const { getCategory } = useCategoryStore();
@@ -68,6 +69,10 @@ const { products } = storeToRefs(useProductStore());
 const { categories } = storeToRefs(useCategoryStore());
 const { tables } = storeToRefs(useTableStore());
 const { staff } = storeToRefs(useUserStore());
+
+const to = (routePath) => {
+  router.push(routePath);
+}
 
 onMounted(() => {
   getProducts();
@@ -85,5 +90,9 @@ onMounted(() => {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

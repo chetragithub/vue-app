@@ -37,13 +37,16 @@
 <script setup>
 import http from "../http-common";
 import { useCookieStore } from "@/stores/cookie";
+import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 // Variable
+const { user } = storeToRefs(useUserStore());
 const cookieStore = useCookieStore();
 const router = useRouter();
 const showPassword = ref(false);
@@ -67,7 +70,7 @@ const onSubmit = async () => {
       const res = await http.post("auth/login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
       cookieStore.setCookie("user_role", res.data.user.role_id.name, 30);
-      let user = {
+      let userObj = {
         user_id: res.data.user._id,
         first_name: res.data.user.first_name,
         last_name: res.data.user.last_name,
@@ -76,7 +79,8 @@ const onSubmit = async () => {
         image: res.data.user.image,
         store: res.data.user.store_id,
       };
-      cookieStore.setCookie("user", JSON.stringify(user), 30);
+      user.value.data = userObj
+      // cookieStore.setCookie("user", JSON.stringify(userObj), 30);
       if (res.data.user.role_id.name === "restaurant_owner") {
         router.push("/");
       } else {

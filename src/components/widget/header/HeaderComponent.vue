@@ -13,9 +13,9 @@
             <v-btn icon v-bind="props">
               <v-avatar class="profile" size="large">
                 <v-img
-                  v-if="user.image"
-                  :src="user.image"
-                  :alt="user.first_name"
+                  v-if="userData.image"
+                  :src="userData.image"
+                  :alt="userData.first_name"
                 ></v-img>
                 <span v-else class="text-h5 text-white">{{ initials }}</span>
               </v-avatar>
@@ -26,15 +26,15 @@
               <div class="mx-auto text-center">
                 <v-avatar class="profile" size="72">
                   <v-img
-                    v-if="user.image"
-                    :src="user.image"
-                    :alt="user.first_name"
+                    v-if="userData.image"
+                    :src="userData.image"
+                    :alt="userData.first_name"
                   ></v-img>
                   <span v-else class="text-h4 text-white">{{ initials }}</span>
                 </v-avatar>
-                <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                <h3>{{ userData.first_name }} {{ userData.last_name }}</h3>
                 <p class="font-inter text-subtitle-1 mt-1">
-                  {{ user.email }}
+                  {{ userData.email }}
                 </p>
                 <p
                   class="font-inter cursor text-subtitle-1 mt-1"
@@ -87,16 +87,22 @@
 import { defineProps, ref } from "vue";
 import { useCookieStore } from "@/stores/cookie";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+import { computed } from "vue";
 
 // Variables
 const props = defineProps(["title", "class"]);
-const { getCookie, removeCookie } = useCookieStore();
-const user = ref(JSON.parse(getCookie("user")));
-const initials =
-  user.value.first_name.slice(0, 1).toUpperCase() +
-  user.value.last_name.slice(0, 1).toUpperCase();
 const isLogout = ref(false);
 const router = useRouter();
+const { removeCookie } = useCookieStore();
+const { userData } = storeToRefs(useUserStore());
+const initials = computed(() => {
+  const { first_name, last_name } = userData.value;
+  return (
+    first_name.slice(0, 1).toUpperCase() + last_name.slice(0, 1).toUpperCase()
+  );
+});
 
 // Method
 const logout = async () => {

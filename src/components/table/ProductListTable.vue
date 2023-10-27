@@ -3,7 +3,7 @@
 <template>
   <!--Don't have project-->
   <div class="h-screen" v-if="products.length === 0">
-    <h4 class="text-center mt-5 text-orange-darken-4">Don't have any product.</h4>
+    <h4 class="text-center mt-5 text-orange-darken-4">No products available</h4>
   </div>
   <!-- Create table of list products -->
   <v-table v-else>

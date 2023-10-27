@@ -7,7 +7,7 @@
       <div class="w-75 card-container m-auto py-15 px-8 rounded-lg bg-grey-darken-2">
         <div class="d-flex image-container ml-10 flex-column justify-center">
           <v-avatar size="200" class="profile align-self-center">
-            <v-img v-if="userInfo.image" :src="userInfo.image" :alt="userInfo.first_name"></v-img>
+            <v-img v-if="userData.image" :src="userData.image" :alt="userData.first_name"></v-img>
             <span v-else class="text-h2 text-white">{{ initials }}</span>
           </v-avatar>
           <primary-button class="px-2 mt-4 align-self-center" @click="showEditForm">
@@ -18,15 +18,15 @@
         <div class="w-50 ml-16 overflow-hidden font-size d-flex flex-column info-container">
           <div class="w-100 font-size d-flex">
             <div class="w-50">First name: </div>
-            <div class="w-50 text-right-group">{{ userInfo.first_name }}</div>
+            <div class="w-50 text-right-group">{{ userData.first_name }}</div>
           </div>
           <div class="w-100 mt-2 d-flex">
             <div class="w-50">Last name: </div>
-            <div class="w-50 text-right-group">{{ userInfo.last_name }}</div>
+            <div class="w-50 text-right-group">{{ userData.last_name }}</div>
           </div>
           <div class="w-100 mt-2 d-flex">
             <div class="w-50">Gender: </div>
-            <div class="w-50 text-right-group">{{ userInfo.gender }}</div>
+            <div class="w-50 text-right-group">{{ userData.gender }}</div>
           </div>
           <div class="w-100 mt-2 d-flex">
             <div class="w-50">Role: </div>
@@ -34,7 +34,7 @@
           </div>
           <div class="w-100 mt-2 d-flex">
             <div class="w-50">Email: </div>
-            <span class="w-50 text-right-group">{{ userInfo.email }}</span>
+            <span class="w-50 text-right-group">{{ userData.email }}</span>
           </div>
           <div class="w-100 mt-2 d-flex">
             <div class="w-50">Password: </div>
@@ -58,31 +58,27 @@ import { storeToRefs } from "pinia";
 // Variables
 const { clearProfileForm } = useUserStore();
 const { getCookie } = useCookieStore();
-const { userProfileInForm } = storeToRefs(useUserStore());
+const { userData, userProfileInForm } = storeToRefs(useUserStore());
 
 const router = useRouter();
 const isShowForm = ref(false);
-const userInfo = ref(JSON.parse(getCookie("user")));
+// const userInfo = ref(JSON.parse(getCookie("user")));
 const userRole = ref(
   getCookie("user_role") === "restaurant_owner"
     ? "restaurant owner"
     : getCookie("user_role")
 );
 const initials = ref(
-  userInfo.value.first_name.slice(0, 1).toUpperCase() +
-  userInfo.value.last_name.slice(0, 1).toUpperCase()
+  userData.value.first_name.slice(0, 1).toUpperCase() +
+  userData.value.last_name.slice(0, 1).toUpperCase()
 );
 
 // Method
 const comeback = () => {
-  if (getCookie("user_role") === "restaurant_owner") {
-    router.push("/");
-  } else {
-    router.push(`/${getCookie("user_role")}`);
-  }
+  router.go(-1)
 };
 const showEditForm = async () => {
-  userProfileInForm.value = userInfo.value;
+  userProfileInForm.value = userData.value;
   isShowForm.value = true;
 };
 
@@ -90,10 +86,10 @@ const showEditForm = async () => {
 const closeForm = () => {
   isShowForm.value = false;
   clearProfileForm();
-  userInfo.value = JSON.parse(getCookie("user"));
-  initials.value =
-    userInfo.value.first_name.slice(0, 1).toUpperCase() +
-    userInfo.value.last_name.slice(0, 1).toUpperCase();
+  // userInfo.value = JSON.parse(getCookie("user"));
+  // initials.value =
+  //   userInfo.value.first_name.slice(0, 1).toUpperCase() +
+  //   userInfo.value.last_name.slice(0, 1).toUpperCase();
 };
 </script>
 

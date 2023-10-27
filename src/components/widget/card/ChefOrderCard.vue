@@ -1,6 +1,5 @@
 <template>
   <v-card
-    v-if="order.is_completed === 0"
     class="card rounded-lg bg-transparent"
   >
     <div class="bg-grey-darken-2 rounded-lg">
@@ -8,7 +7,7 @@
         <v-card-subtitle class="card-subtitle"
           ><v-icon class="mdi mdi-table" style="font-size: 18px"></v-icon>
           :
-          {{ order.table_number }}
+          {{ order.table_id.table_number }}
         </v-card-subtitle>
         <v-card-subtitle
           ><v-icon
@@ -26,15 +25,15 @@
           <div
             class="d-flex justify-content-between bg-grey-darken-3 rounded p-2"
             v-for="order_detail in order.order_details"
-            :key="order_detail"
+            :key="order_detail._id"
           >
             <div>
               <span style="font-size: 18px"
                 >Name :
-                {{ order_detail.product_customize.product.name }}</span
+                {{ order_detail.product_customize_id.product_id.name }}</span
               ><br />
               <span style="font-size: 18px"
-                >Size: {{ order_detail.product_customize.size }}</span
+                >Size: {{ order_detail.product_customize_id.size }}</span
               >
             </div>
             <span style="font-size: 18px" class="align-self-end"
@@ -56,7 +55,7 @@
   </v-card>
 </template>
 <script setup>
-import { defineProps, onMounted } from "vue";
+import { defineProps } from "vue";
 import { useOrderStore } from "@/stores/order";
 defineProps(["order"]);
 
@@ -67,15 +66,11 @@ const { updateOrdersToCompleted } = useOrderStore();
 const complete = (order) => {
   const updateCompleteOrder = {
     is_completed: true,
-    is_paid: order["is_paid"],
+    // is_paid: order["is_paid"],
   };
-  updateOrdersToCompleted(order.order_id, updateCompleteOrder);
+  updateOrdersToCompleted(order._id, updateCompleteOrder);
 };
 
-// Lifecycle hook
-onMounted(() => {
-  useOrderStore();
-});
 </script>
 
 <style scoped>

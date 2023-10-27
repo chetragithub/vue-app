@@ -1,38 +1,63 @@
 <template>
   <v-layout>
     <!-- Nav -->
-    <header-component :title="user.store.name" :class="'m-auto'">
-      <v-text-field v-model="keyword" @keyup="search" class="search text-white rounded-lg" density="compact"
-        variant="solo-none" label="Search for product..." append-inner-icon="mdi-magnify" single-line
-        hide-details></v-text-field>
+    <header-component :title="userData.store.name" :class="'m-auto'">
+      <v-text-field
+        v-model="keyword"
+        class="search text-white rounded-lg"
+        density="compact"
+        variant="solo-none"
+        label="Search for product..."
+        append-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+      ></v-text-field>
     </header-component>
 
-
     <v-main class="mt-2 mb-15">
-      <v-tabs v-model="filterValue" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
+      <v-tabs
+        v-model="filterValue"
+        class="text-white mb-3"
+        color="red-accent-2"
+        align-tabs="center"
+      >
         <v-tab :value="'all'">All</v-tab>
-        <v-tab :value="'popular'">Popular Products</v-tab>
-        <v-tab v-for="category in categories" :key="category.category_id" :value="category.category_id">{{
-          category.name }}</v-tab>
+        <v-tab
+          v-for="category in categories"
+          :key="category._id"
+          :value="category._id"
+          >{{ category.name }}</v-tab
+        >
       </v-tabs>
 
-      <v-select v-model="table" :items="tables" return-object="table" @update:model-value="tableSelected"
-        :item-title="'table_number'" :item-value="'table'"
-        class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2" hide-details="auto"
-        label="Select table"></v-select>
+      <v-select
+        v-model="table"
+        :items="tables"
+        return-object="table"
+        @update:model-value="tableSelected"
+        :item-title="'table_number'"
+        :item-value="'table'"
+        class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2"
+        hide-details="auto"
+        label="Select table"
+      ></v-select>
 
       <header class="text-center text-white text-h5 font-weight-bold">
         PRODUCTS
       </header>
 
       <!-- List products -->
-      <div v-if="products.length > 0" class="grid-container gap-2 mx-2 mt-2">
-        <product-card v-for="product in products" :key="product._id" :product="product"
-          @on-customize="onCustomize"></product-card>
+      <div v-if="producties.length > 0" class="grid-container gap-2 mx-2 mt-2">
+        <product-card
+          v-for="product in producties"
+          :key="product._id"
+          :product="product"
+          @on-customize="onCustomize"
+        ></product-card>
       </div>
 
       <v-container v-else>
-        <h4 class="mt-5 text-center text-white">Don't have any product.</h4>
+        <h4 class="mt-5 text-center text-white">No product available.</h4>
       </v-container>
     </v-main>
   </v-layout>
@@ -40,8 +65,13 @@
   <!-- A product customize -->
   <v-card v-if="productCustomize" class="overflow-visible">
     <v-layout>
-      <v-navigation-drawer v-model="isCustomize" class="customize-drawer bg-grey-darken-2 h-auto rounded-t-lg" rail
-        permanent location="bottom">
+      <v-navigation-drawer
+        v-model="isCustomize"
+        class="customize-drawer bg-grey-darken-2 h-auto rounded-t-lg"
+        rail
+        permanent
+        location="bottom"
+      >
         <v-card class="mx-auto rounded-t-lg bg-grey-darken-2">
           <v-card-item class="bg-red-accent-2">
             <v-card-title>
@@ -49,13 +79,19 @@
             </v-card-title>
 
             <template v-slot:append>
-              <v-defaults-provider :defaults="{
-                VBtn: {
-                  variant: 'text',
-                  density: 'comfortable',
-                },
-              }">
-                <v-btn class="text-h5" @click="isCustomize = !isCustomize" icon="mdi-close-circle"></v-btn>
+              <v-defaults-provider
+                :defaults="{
+                  VBtn: {
+                    variant: 'text',
+                    density: 'comfortable',
+                  },
+                }"
+              >
+                <v-btn
+                  class="text-h5"
+                  @click="isCustomize = !isCustomize"
+                  icon="mdi-close-circle"
+                ></v-btn>
               </v-defaults-provider>
             </template>
           </v-card-item>
@@ -69,13 +105,20 @@
               </div>
             </v-list-item>
 
-            <v-list-item v-for="customize in productCustomize.product_customizes" :key="customize.id">
+            <v-list-item
+              v-for="customize in productCustomize.product_customizes"
+              :key="customize.id"
+            >
               <div class="d-flex align-center">
                 <h5 class="font-weight-bold">{{ customize.size }}</h5>
                 <v-spacer></v-spacer>
                 <h5 class="mr-6 font-weight-bold">${{ customize.price }}</h5>
-                <v-icon @click="addCustomize(productCustomize, customize)" class="text-h4" color="red-accent-2"
-                  icon="mdi-plus-circle"></v-icon>
+                <v-icon
+                  @click="addCustomize(productCustomize, customize)"
+                  class="text-h4"
+                  color="red-accent-2"
+                  icon="mdi-plus-circle"
+                ></v-icon>
               </div>
             </v-list-item>
           </v-list>
@@ -87,11 +130,17 @@
   <!-- Order summary -->
   <v-layout class="overflow-visible">
     <v-bottom-navigation class="rounded-t-lg bg-grey-darken-2">
-      <div @click="(isCart = !isCart), (isCustomize = false)" class="d-flex align-center bg-red-accent-2 rounded-lg px-2"
-        style="cursor: pointer">
+      <div
+        @click="(isCart = !isCart), (isCustomize = false)"
+        class="d-flex align-center bg-red-accent-2 rounded-lg px-2"
+        style="cursor: pointer"
+      >
         <div>
           <v-icon class="text-h4 mt-3" icon="mdi-cart"></v-icon>
-          <v-avatar class="mb-2 text-h6 text-white font-weight-bold" color="grey-darken-4">
+          <v-avatar
+            class="mb-2 text-h6 text-white font-weight-bold"
+            color="grey-darken-4"
+          >
             {{ totalFoods }}
           </v-avatar>
         </div>
@@ -111,8 +160,13 @@
   <!-- My cart -->
   <v-card v-if="myCart.length > 0">
     <v-layout class="overflow-visible">
-      <v-navigation-drawer v-model="isCart" class="cart-drawer bg-grey-darken-2 rounded-t-lg" rail permanent
-        location="bottom">
+      <v-navigation-drawer
+        v-model="isCart"
+        class="cart-drawer bg-grey-darken-2 rounded-t-lg"
+        rail
+        permanent
+        location="bottom"
+      >
         <v-card class="mx-auto bg-grey-darken-2 rounded-t-lg">
           <v-card-item class="bg-red-accent-2">
             <v-card-title>
@@ -120,24 +174,39 @@
             </v-card-title>
 
             <template v-slot:append>
-              <v-defaults-provider :defaults="{
-                VBtn: {
-                  variant: 'text',
-                  density: 'comfortable',
-                },
-              }">
-                <v-btn class="text-h5" @click="isCart = !isCart" icon="mdi-close-circle"></v-btn>
+              <v-defaults-provider
+                :defaults="{
+                  VBtn: {
+                    variant: 'text',
+                    density: 'comfortable',
+                  },
+                }"
+              >
+                <v-btn
+                  class="text-h5"
+                  @click="isCart = !isCart"
+                  icon="mdi-close-circle"
+                ></v-btn>
               </v-defaults-provider>
             </template>
           </v-card-item>
 
           <v-list>
-            <v-list-item v-for="customize in myCart" :key="customize.product_customize_id" class="text-orange-darken-4">
+            <v-list-item
+              v-for="customize in myCart"
+              :key="customize.product_customize_id"
+              class="text-orange-darken-4"
+            >
               <div class="d-flex align-center">
                 <div class="d-flex align-center">
                   <div>
-                    <v-img class="bg-white rounded-lg" :width="130" :height="100" :src="customize.product.image"
-                      cover></v-img>
+                    <v-img
+                      class="bg-white rounded-lg"
+                      :width="130"
+                      :height="100"
+                      :src="customize.product.image"
+                      cover
+                    ></v-img>
                   </div>
                   <div class="ml-3 text-white">
                     <h6 class="font-weight-bold">
@@ -151,13 +220,21 @@
                 </div>
                 <v-spacer></v-spacer>
                 <div class="d-flex align-center">
-                  <v-icon @click="minusCustomize(customize.product_customize_id)" class="text-h4" color="white"
-                    icon="mdi-minus-circle-outline"></v-icon>
+                  <v-icon
+                    @click="minusCustomize(customize.product_customize_id)"
+                    class="text-h4"
+                    color="white"
+                    icon="mdi-minus-circle-outline"
+                  ></v-icon>
                   <h4 class="text-white mx-3 mt-2 font-weight-bold">
                     {{ customize.quantity }}
                   </h4>
-                  <v-icon @click="addCustomize(customize.product, customize)" class="text-h4" color="red-accent-2"
-                    icon="mdi-plus-circle"></v-icon>
+                  <v-icon
+                    @click="addCustomize(customize.product, customize)"
+                    class="text-h4"
+                    color="red-accent-2"
+                    icon="mdi-plus-circle"
+                  ></v-icon>
                 </div>
               </div>
             </v-list-item>
@@ -168,13 +245,21 @@
   </v-card>
 
   <!-- Dialog remove customize -->
-  <base-dialog v-model="isRemoveCustom" title="Tips" ms="Are you sure you don't want it?">
+  <base-dialog
+    v-model="isRemoveCustom"
+    title="Tips"
+    ms="Are you sure you don't want it?"
+  >
     <danger-button @click="isRemoveCustom = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
       Cancel
     </danger-button>
     <primary-button @click="removeCustomize(deleteCustomId)">
-      <v-icon icon="mdi-checkbox-multiple-marked" color="white" size="large"></v-icon>
+      <v-icon
+        icon="mdi-checkbox-multiple-marked"
+        color="white"
+        size="large"
+      ></v-icon>
       Confirm
     </primary-button>
   </base-dialog>
@@ -197,17 +282,17 @@
 import { computed, onMounted, ref } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
+import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
-import { useCookieStore } from "@/stores/cookie";
+// import { useCookieStore } from "@/stores/cookie";
 import { useTableStore } from "@/stores/table";
 import { storeToRefs } from "pinia";
 
 // Variables
-const { getCookie } = useCookieStore();
-const { getProducts, searchProducts, filterProducts, getPopularProducts } = useProductStore();
+const { getProducts } = useProductStore();
 const { getTables } = useTableStore();
 const { getCategory } = useCategoryStore();
-const user = ref(JSON.parse(getCookie("user")));
+const { userData } = storeToRefs(useUserStore());
 const { tables } = storeToRefs(useTableStore());
 const { products } = storeToRefs(useProductStore());
 const { categories } = storeToRefs(useCategoryStore());
@@ -231,25 +316,28 @@ const table = localStorage.getItem("table_selectd")
   ? ref(JSON.parse(localStorage.getItem("table_selectd")))
   : ref(null);
 
-// Methods
-// Search for products
-const search = () => {
-  if (keyword.value) {
-    searchProducts(keyword.value);
-  } else {
-    getProducts();
-  }
-};
-// Filter for products
-const filter = () => {
-  if (filterValue.value === 'all') {
-    getProducts();
-  } else if (filterValue.value === 'popular') {
-    getPopularProducts();
-  } else if (filterValue.value) {
-    filterProducts(filterValue.value);
-  }
-};
+const producties = computed(() => {
+  if (!products.value.length === 0) return [];
+  return products.value.filter((r) => {
+    const keys = ["name", "product_code", "description"];
+    if (filterValue.value != "all") {
+      for (const key of keys) {
+        if (
+          r[key].toLowerCase().search(keyword.value.toLowerCase()) >= 0 &&
+          r.category_id._id == filterValue.value
+        )
+          return true;
+      }
+    } else {
+      for (const key of keys) {
+        if (r[key].toLowerCase().search(keyword.value.toLowerCase()) >= 0)
+          return true;
+      }
+    }
+    return false;
+  });
+});
+
 // On click product customize
 const onCustomize = (product) => {
   isCustomize.value = true;
@@ -275,7 +363,7 @@ const totalFoods = computed(() => {
 // Add product customize
 const addCustomize = (product, customize) => {
   if (customize._id) {
-    customize.product_customize_id = customize._id
+    customize.product_customize_id = customize._id;
   }
   const customizes = localStorage.getItem("customizes_selectd")
     ? JSON.parse(localStorage.getItem("customizes_selectd"))

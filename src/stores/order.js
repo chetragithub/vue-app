@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
 import http from "../http-common";
+import socket from "../common/websocket/index";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 export const useOrderStore = defineStore("order", {
     state: () => {
@@ -15,8 +18,10 @@ export const useOrderStore = defineStore("order", {
         // Store Order 
         async storeOrder(order) {
             try {
+                const { userData } = storeToRefs(useUserStore());
                 const res = await http.post('orders', order);
                 if (res.data.success) {
+                    socket.send(JSON.stringify({ ...userData.value, msg: 'Hello, you have a new order.'}))
                     return res.data.data;
                 }
             } catch (err) {
@@ -26,7 +31,7 @@ export const useOrderStore = defineStore("order", {
         // Get orders not complete
         async getOrdersNotCompleted() {
             try {
-                const res = await http.get('orders/completed/0');
+                const res = await http.get('orders?is_completed=false');
                 if (res.data.success) {
                     this.orders = res.data.data;
                 }
@@ -59,7 +64,7 @@ export const useOrderStore = defineStore("order", {
         // Get order for cashier
         async getOrder() {
             try {
-                const res = await http.get('orders/paid/0');
+                const res = await http.get('orders?is_paid=false');
                 if (res.data.success) {
                     this.notPaidOrders = res.data.data
                 }

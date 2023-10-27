@@ -144,7 +144,7 @@ const change = async () => {
   }
 };
 const comeback = () => {
-  router.push("/manage_account");
+  router.go(-2)
 };
 </script>
 

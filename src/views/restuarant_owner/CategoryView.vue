@@ -46,7 +46,7 @@
         </div>
         <!-- list category empty -->
         <div class="w-100 text-center" v-else>
-          <h4 class="text-center mt-5 text-white">Don't have any category.</h4>
+          <h4 class="text-center mt-5 text-white">No category available.</h4>
         </div>
 
         <!-- Category Summary -->

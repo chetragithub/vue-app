@@ -36,8 +36,8 @@
           ></apexchart>
 
           <!-- No product report -->
-          <div v-if="productReports.length == 0" class="h-screen">
-            <h4 class="text-center mt-5 text-white">Don't have any report.</h4>
+          <div v-if="productReports.length == 0" class="w-100">
+            <h4 class="text-center mt-5 text-white">No report available.</h4>
           </div>
         </div>
 

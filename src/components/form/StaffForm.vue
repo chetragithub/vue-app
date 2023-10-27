@@ -42,7 +42,7 @@
                 @blur="v$.password.$touch"></v-text-field>
               <!--Select role field-->
               <v-select v-model="staffInForm.role_id" label="Role" :items="roles" :item-title="'name'"
-                item-value="role_id" density="compact" class="mt-2 text-black" variant="outlined"
+                item-value="_id" density="compact" class="mt-2 text-black" variant="outlined"
                 :error-messages="v$.role_id.$errors.map((e) => e.$message)" @input="v$.role_id.$touch"
                 @blur="v$.role_id.$touch"></v-select>
             </v-row>
@@ -76,13 +76,13 @@
   </v-form>
 
   <!-- Alert create success -->
-  <base-alert v-model="createSuccess">
+  <base-alert v-model="createSuccess" @hide-snackbar="createSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Created staff succeefully.</h5>
   </base-alert>
 
   <!-- Alert update success -->
-  <base-alert v-model="updateSuccess">
+  <base-alert v-model="updateSuccess" @hide-snackbar="updateSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">Updated staff succeefully.</h5>
   </base-alert>

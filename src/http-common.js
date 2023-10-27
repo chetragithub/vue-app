@@ -4,6 +4,7 @@ import axios from "axios";
 import { storeToRefs } from "pinia";
 import { useCookieStore } from "@/stores/cookie";
 import { useLoadingStore } from "@/lib/state/loading/loading";
+import router from "@/router/index";
 
 const BASE_URL = process.env.VUE_APP_API_URL;
 const http = axios.create({
@@ -30,11 +31,18 @@ http.interceptors.response.use(
     return response;
   },
   async (error) => {
+    // const router = useRouter();
+    const { removeCookie } = useCookieStore();
     const { isLoading } = storeToRefs(useLoadingStore());
     isLoading.value = false;
-
+    if (error.request.status === 401) {
+      console.log(error.request.status);
+      removeCookie("user_token");
+      removeCookie("user_role");
+      removeCookie("user");
+      router.push("/login");
+    }
     return Promise.reject(error);
-
   }
 );
 export default http;

@@ -21,7 +21,7 @@ export const useReportsStore = defineStore("reports", {
     },
     async getMoneyReports(year) {
       try {
-        const res = await http.get(`money_report/${year}`);
+        const res = await http.get(`reports?year=${year}`);
         if (res.data.success) {
           this.moneyReports = res.data.data;
         }

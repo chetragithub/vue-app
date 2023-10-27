@@ -44,8 +44,8 @@
         </div>
 
         <!-- list table empty -->
-        <div class="h-screen" v-else>
-          <h4 class="text-center mt-5 text-white">Don't have any table.</h4>
+        <div class="w-100" v-else>
+          <h4 class="text-center mt-5 text-white">No table available.</h4>
         </div>
 
         <!-- Table Summary -->

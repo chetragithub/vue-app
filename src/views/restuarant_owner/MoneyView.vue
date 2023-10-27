@@ -24,8 +24,8 @@
           ]" height="485" type="bar" :options="options" :series="series"></apexchart>
 
           <!-- No product report -->
-          <div v-if="moneyReports.length == 0" class="h-screen">
-            <h4 class="text-center mt-5 text-white">Don't have any report.</h4>
+          <div v-if="moneyReports.length == 0" class="w-100">
+            <h4 class="text-center mt-5 text-white">No report available.</h4>
           </div>
         </div>
         <!--Money summary -->
@@ -34,13 +34,13 @@
             <div v-for="moneyReport in moneyReports" :key="moneyReport"
               class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center">
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                {{ getMonthName(moneyReport.month) }}
+                {{ getMonthName(moneyReport._id.month) }}
               </div>
               <span class="mr-2">${{ Number(moneyReport.total_money).toFixed(2) }}</span>
             </div>
             <div class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center">
               <span class="ml-2">Total</span>
-              <span class="mr-2">${{ totalMoney }}</span>
+              <span class="mr-2">${{ totalMoney.toFixed(2) }}</span>
             </div>
           </template>
         </summary-component>
@@ -64,7 +64,7 @@ const filter = (array, key) => {
   let items = [];
   array.filter(function (value) {
     if (key === 'month') {
-      items.push(getMonthName(value[key]));
+      items.push(getMonthName(value._id[key]));
     } else {
       items.push(Number(value[key]));
     }

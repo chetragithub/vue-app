@@ -7,7 +7,11 @@
     <span class="w-15">{{ user.last_name }}</span>
     <span class="w-10">{{ user.gender }}</span>
     <span class="w-25">{{ user.email }}</span>
-    <span class="text-capitalize w-15 pl-5">{{ user.role.name }}</span>
+    <span class="text-capitalize w-15 pl-5">{{
+      user.role_id.name == "restaurant_owner"
+        ? "restaurant owner"
+        : user.role_id.name
+    }}</span>
     <!--Action-->
     <v-card-actions class="w-20 d-flex justify-end">
       <slot></slot>

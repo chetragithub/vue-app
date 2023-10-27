@@ -3,8 +3,8 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import VueApexCharts from "vue3-apexcharts";
 import firebase from "firebase";
-import OneSignal from "@onesignal/onesignal-vue3";
-import oneSignalConfig from "./onesignal";
+// import OneSignal from "@onesignal/onesignal-vue3";
+// import oneSignalConfig from "./onesignal";
 import firebaseConfig from "./firebase";
 import App from "./App.vue";
 import router from "./router";
@@ -91,7 +91,7 @@ firebase.initializeApp(firebaseConfig);
 // App uses
 app
   .use(VueApexCharts)
-  .use(OneSignal, oneSignalConfig)
+  // .use(OneSignal, oneSignalConfig)
   .use(vuetify)
   .use(router)
   .use(pinia)

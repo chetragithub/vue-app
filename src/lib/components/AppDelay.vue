@@ -36,7 +36,7 @@ const { isLoading } = storeToRefs(useLoadingStore());
   z-index: 5000;
   width: 100%;
   height: 100%;
-  background: rgba(69, 69, 69, 0.5);
+  background: rgba(69, 69, 69, 0.123);
   top: 0;
   left: 0;
 }

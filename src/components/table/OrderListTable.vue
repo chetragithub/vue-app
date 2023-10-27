@@ -2,7 +2,7 @@
 
 <template>
   <!-- Alert message -->
-  <base-alert v-model="paidSuccess">
+  <base-alert v-model="paidSuccess" @hide-snackbar="paidSuccess = false">
     <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
     <h5 class="mt-2">Order have paid successfully!</h5>
   </base-alert>
@@ -18,12 +18,12 @@
   </base-dialog>
 
   <!-- Create table of list orders -->
-  <v-card v-for="order in props.orders" :key="order.name" class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg">
+  <v-card v-for="order in props.orders" :key="order._id" class="d-flex pa-2 ma-2 bg-grey-darken-2 rounded-lg">
     <v-card-text class="d-flex justify-space-between">
-      <span>ID : {{ order.order_id }}</span>
-      <span>Table : {{ order.table_number }}</span>
-      <span>{{ new Date(order.datetime).toDateString() }}</span>
-      <span>{{ new Date(order.datetime).toLocaleTimeString() }}</span>
+      <span class="w-50">ID : {{ order._id }}</span>
+      <span class="w-25">Table : {{ order.table_id.table_number }}</span>
+      <span class="w-25">{{ new Date(order.datetime).toLocaleDateString() }}</span>
+      <span class="w-25">{{ new Date(order.datetime).toLocaleTimeString() }}</span>
     </v-card-text>
     <v-card-actions>
       <dark-button @click="(orderInfo = order), (dialog = true)">
@@ -53,38 +53,32 @@
       <v-card-text>
         <div class="d-flex text-darken-4">
           <h6>ID:</h6>
-          <h6 class="ml-2 font-weight-bold">{{ orderInfo.order_id }}</h6>
+          <h6 class="ml-2 font-weight-bold">{{ orderInfo._id }}</h6>
         </div>
         <div class="d-flex text-darken-4">
           <h6>Table:</h6>
-          <h6 class="ml-2 font-weight-bold">{{ orderInfo.table_number }}</h6>
+          <h6 class="ml-2 font-weight-bold">{{ orderInfo.table_id.table_number }}</h6>
         </div>
         <div class="d-flex text-darken-4">
-          <h6>Date:</h6>
+          <h6>Date Time:</h6>
           <h6 class="ml-2 font-weight-bold">
-            {{ new Date(orderInfo.datetime).toDateString() }}
-          </h6>
-        </div>
-        <div class="d-flex text-darken-4">
-          <h6>Time:</h6>
-          <h6 class="ml-2 font-weight-bold">
-            {{ new Date(orderInfo.datetime).toLocaleTimeString() }}
+            {{ new Date(orderInfo.datetime).toLocaleString() }}
           </h6>
         </div>
 
         <!-- Card of list -->
         <h6 class="text-darken-4 font-weight-bold mt-3">Summary Orders</h6>
         <v-list>
-          <div v-for="order_detail in orderInfo.order_details" :key="order_detail.id">
+          <div v-for="order_detail in orderInfo.order_details" :key="order_detail._id">
             <div>
-              <span>{{ order_detail.product_customize.product.name }}</span><br />
-              <span>size / {{ order_detail.product_customize.size }}</span>
+              <span>{{ order_detail.product_customize_id.product_id.name }}</span><br />
+              <span>size / {{ order_detail.product_customize_id.size }}</span>
             </div>
             <div class="d-flex">
               <span>X{{ order_detail.quantity }}</span>
               <v-spacer></v-spacer>
               <span>${{
-                (order_detail.quantity * order_detail.product_customize.price).toFixed(2)
+                (order_detail.quantity * order_detail.product_customize_id.price).toFixed(2)
               }}</span>
             </div>
             <hr />
@@ -114,26 +108,26 @@
     <div id="printOrder" v-if="orderPrint">
       <div width="100%">
         <h6 class="text-center text-h4">
-          Store's name:
-          <span class="font-weight-bold">{{ orderPrint.store.name }}</span>
+          Welcome to:
+          <span class="font-weight-bold">{{ orderPrint.store_id.name }}</span>
         </h6>
         <div class="p-2">
           <div class="p-1">
             <h6 class="text-subtitle-1">
               លេខ / ID :
               <span class="font-weight-bold">{{
-                orderPrint.order_id
+                orderPrint._id
               }}</span>
             </h6>
             <h6 class="text-subtitle-1">
               លេខតុ / Table :
               <span class="font-weight-bold">{{
-                orderPrint.table_number
+                orderPrint.table_id.table_number
               }}</span>
             </h6>
             <h6 class="text-subtitle-1">
               កាលបរិច្ឆេទ / Date Time :
-              <span class="font-weight-bold">{{ orderPrint.datetime }}</span>
+              <span class="font-weight-bold">{{ new Date(orderPrint.datetime).toLocaleString() }}</span>
             </h6>
           </div>
           <!-- list of food -->
@@ -164,20 +158,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="order_detail in orderPrint.order_details" :key="order_detail">
+              <tr v-for="order_detail in orderPrint.order_details" :key="order_detail._id">
                 <td class="text-center">
-                  {{ order_detail.product_customize.product.name }}
+                  {{ order_detail.product_customize_id.product_id.name }}
                 </td>
                 <td class="text-center">
-                  {{ order_detail.product_customize.size }}
+                  {{ order_detail.product_customize_id.size }}
                 </td>
                 <td class="text-center">{{ order_detail.quantity }}</td>
                 <td class="text-center">
-                  ${{ order_detail.product_customize.price }}
+                  ${{ order_detail.product_customize_id.price.toFixed(2) }}
                 </td>
                 <td class="text-center">
                   ${{
-                    (order_detail.quantity * order_detail.product_customize.price).toFixed(2)
+                    (order_detail.quantity * order_detail.product_customize_id.price).toFixed(2)
                   }}
                 </td>
               </tr>
@@ -229,7 +223,7 @@ const totalPriceOrderInfo = computed(() => {
 const getTotalPrice = (order) => {
   const sum = ref(0);
   for (let order_detail of order.order_details) {
-    sum.value += order_detail.product_customize.price * order_detail.quantity;
+    sum.value += order_detail.product_customize_id.price * order_detail.quantity;
   }
   return sum.value;
 };
@@ -238,7 +232,7 @@ const complete = () => {
     is_completed: orderClicked.value.is_completed,
     is_paid: true,
   };
-  updateOrdersToPaid(orderClicked.value.order_id, updatePaidOrde);
+  updateOrdersToPaid(orderClicked.value._id, updatePaidOrde);
   isComplete.value = false;
   orderClicked.value = null;
 };

@@ -7,7 +7,7 @@
 
       <!-- Header top -->
       <header-component title="Manage product">
-        <v-text-field v-model="keyword" @keyup="search" class="search text-white rounded-lg" density="compact"
+        <v-text-field v-model="keyword" class="search text-white rounded-lg" density="compact"
           variant="solo-none" label="Search for product..." append-inner-icon="mdi-magnify" single-line
           hide-details></v-text-field>
       </header-component>
@@ -15,14 +15,14 @@
       <!-- Main container -->
       <main class="d-flex mt-1 mr-2">
         <div class="d-flex flex-column mr-2 w-100">
-          <v-tabs v-model="filterValue" @click="filter" class="text-white mb-3" color="red-accent-2" align-tabs="center">
+          <v-tabs v-model="filterValue" class="text-white mb-3" color="red-accent-2" align-tabs="center">
             <v-tab :value="'all'">All</v-tab>
             <v-tab v-for="category in categories" :key="category._id" :value="category._id">{{
               category.name }}</v-tab>
           </v-tabs>
           <!-- List products card -->
-          <div v-if="products.length > 0" class="grid-container mt-2 gap-2">
-            <product-res-owner-card v-for="product in products" :key="product._id" :product="product">
+          <div v-if="producties.length > 0" class="grid-container mt-2 gap-2">
+            <product-res-owner-card v-for="product in producties" :key="product._id" :product="product">
               <div class="d-flex justify-space-between align-center mt-2">
                 <dark-button @click="onEdit(product)">
                   <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
@@ -40,7 +40,7 @@
           </div>
 
           <div class="w-100 text-center" v-else>
-            <h4 class="text-center mt-5 text-white">Don't have any product.</h4>
+            <h4 class="text-center mt-5 text-white">No product available.</h4>
           </div>
         </div>
 
@@ -100,7 +100,7 @@
 
 <script setup>
 // Import
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
@@ -108,7 +108,7 @@ import { ref } from "vue";
 
 // Variables
 const { getCategory } = useCategoryStore();
-const { getProducts, searchProducts, filterProducts, deleteProduct } = useProductStore();
+const { getProducts, deleteProduct } = useProductStore();
 const {
   products,
   dialog,
@@ -123,23 +123,30 @@ const deleteId = ref(null);
 const keyword = ref("");
 const filterValue = ref(null);
 
+const producties = computed(() => {
+  if (!products.value.length === 0) return [];
+  return products.value.filter((r) => {
+    const keys = ["name", "product_code", "description"];
+    if (filterValue.value != "all") {
+      for (const key of keys) {
+        if (
+          r[key].toLowerCase().search(keyword.value.toLowerCase()) >= 0 &&
+          r.category_id._id == filterValue.value
+        )
+          return true;
+      }
+    } else {
+      for (const key of keys) {
+        if (r[key].toLowerCase().search(keyword.value.toLowerCase()) >= 0)
+          return true;
+      }
+    }
+    return false;
+  });
+});
+
 // Methods
-// Search for products
-const search = () => {
-  if (keyword.value) {
-    searchProducts(keyword.value);
-  } else {
-    getProducts();
-  }
-};
-// Filter for products
-const filter = () => {
-  if (filterValue.value === 'all') {
-    getProducts();
-  } else if (filterValue.value) {
-    filterProducts(filterValue.value);
-  }
-};
+
 // Delete the product
 let deleted = async () => {
   await deleteProduct(deleteId.value);
