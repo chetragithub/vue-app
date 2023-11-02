@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <!-- Nav -->
-    <header-component :title="userData.store.name" :class="'m-auto'">
+    <header-component :class="'m-auto'">
       <v-text-field
         v-model="keyword"
         class="search text-white rounded-lg"
@@ -290,7 +290,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
-import { useUserStore } from "@/stores/user";
+// import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
 import { useTableStore } from "@/stores/table";
 import { storeToRefs } from "pinia";
@@ -300,7 +300,7 @@ import { useOrderStore } from "@/stores/order";
 const { getProducts } = useProductStore();
 const { getTables } = useTableStore();
 const { getCategory } = useCategoryStore();
-const { userData } = storeToRefs(useUserStore());
+// const { userData } = storeToRefs(useUserStore());
 const { tables } = storeToRefs(useTableStore());
 const { products } = storeToRefs(useProductStore());
 const { categories } = storeToRefs(useCategoryStore());
