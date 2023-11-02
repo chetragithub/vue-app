@@ -24,7 +24,7 @@ const isNotification = ref(false);
 const msg = ref("");
 
 // Chang site title and icon
-document.title = "Restaurant Management System";
+document.title = "Booking Now";
 let favicon = document.querySelector('link[rel="icon"]');
 favicon.setAttribute("href", require("@/assets/logo.png"));
 

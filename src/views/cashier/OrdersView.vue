@@ -42,7 +42,7 @@
   <!-- Alert message -->
   <base-alert v-model="paidSuccess" @hide-snackbar="paidSuccess = false">
     <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
-    <h5 class="mt-2">Order have paid successfully!</h5>
+    <h5 class="mt-2">Order have paid successfully.</h5>
   </base-alert>
 </template>
 

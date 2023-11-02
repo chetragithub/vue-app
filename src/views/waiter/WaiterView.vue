@@ -269,13 +269,13 @@
   <!-- Alert please selecet table -->
   <base-alert v-model="tableAlert" @hide-snackbar="tableAlert = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
-    <h5 class="mt-2">Please select table.</h5>
+    <h5 class="mt-2">Please select table!</h5>
   </base-alert>
 
   <!-- Alert please selecet food -->
   <base-alert v-model="foodAlert" @hide-snackbar="foodAlert = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
-    <h5 class="mt-2">Please select food.</h5>
+    <h5 class="mt-2">Please select food!</h5>
   </base-alert>
 
   <!-- Alert success -->

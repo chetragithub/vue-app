@@ -2,7 +2,7 @@
   <!-- create alet -->
   <base-alert v-model="createSuccess" @hide-snackbar="createSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Created table successfully!</h5>
+    <h5 class="mt-2">Created table successfully.</h5>
   </base-alert>
 
   <!-- update table successfully -->
@@ -14,7 +14,7 @@
   <!-- delete alert -->
   <base-alert v-model="deleteSuccess" @hide-snackbar="deleteSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Deleted table successfully!</h5>
+    <h5 class="mt-2">Deleted table successfully.</h5>
   </base-alert>
 
   <v-layout>

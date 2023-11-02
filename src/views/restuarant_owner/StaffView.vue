@@ -85,7 +85,7 @@
   <!--Alert delete success-->
   <base-alert v-model="deleteSuccess" @hide-snackbar="deleteSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Deleted staff successfully!</h5>
+    <h5 class="mt-2">Deleted staff successfully.</h5>
   </base-alert>
 </template>
 
