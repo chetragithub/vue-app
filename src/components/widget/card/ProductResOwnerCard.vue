@@ -1,6 +1,6 @@
 <template>
     <v-sheet class="bg-grey-darken-2 rounded-lg p-2 w-auto">
-        <v-img class="rounded-lg" height="120" :src="product.image" cover>
+        <v-img class="rounded-lg" height="200" :src="product.image" cover>
         </v-img>
 
         <h6 class="font-weight-bold mt-1">{{ product.name }}</h6>

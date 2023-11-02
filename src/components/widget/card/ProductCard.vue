@@ -1,6 +1,6 @@
 <template>
     <v-card class="w-auto p-2 bg-grey-darken-2 rounded-lg" elevation="20">
-        <v-img class="rounded-lg" height="130" :src="product.image" cover>
+        <v-img class="rounded-lg" height="140" :src="product.image" cover>
         </v-img>
 
         <div class="mt-2 d-flex flex-column">
