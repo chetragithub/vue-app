@@ -36,17 +36,11 @@
 
             <v-spacer></v-spacer>
 
-            <primary-button @click="confirm" class="px-3">
+            <primary-button @click="confirm" :disabled="success" class="px-3">
                 <h6 class="font-weight-bold mt-2">Confirm</h6>
             </primary-button>
         </v-bottom-navigation>
     </v-layout>
-
-    <!-- Alert success -->
-    <base-alert v-model="success">
-        <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h5 class="mt-2">Ordered succeefully.</h5>
-    </base-alert>
 </template>
 
 <script setup>
@@ -58,7 +52,6 @@ import { useOrderStore } from "@/stores/order";
 const router = useRouter();
 const myCart = localStorage.getItem('customizes_selectd') ? ref(JSON.parse(localStorage.getItem('customizes_selectd'))) : ref([]);
 const table = localStorage.getItem('table_selectd') ? ref(JSON.parse(localStorage.getItem('table_selectd'))) : ref(null);
-const success = ref(false);
 const { storeOrder } = useOrderStore();
 
 const totalPrice = computed(() => {
@@ -83,11 +76,10 @@ const confirm = async () => {
         product_customizes: customizes.map(({ product_customize_id, quantity }) => ({ product_customize_id, quantity }))
     };
     await storeOrder(newOrder);
-    success.value = true;
     localStorage.removeItem('customizes_selectd');
     localStorage.removeItem('table_selectd');
-    setTimeout(() => {
-        router.push('/waiter');
-    }, 1200);
+    router.push('/waiter');
+    // setTimeout(() => {
+    // }, 4000);
 }
 </script>

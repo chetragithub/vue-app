@@ -15,8 +15,8 @@
           <v-row class="d-flex px-2 flex-column justify-center gap-2">
             <v-tooltip v-model="showToolTip" location="center">
               <template v-slot:activator="{ props }">
-                <v-avatar v-bind="props" size="150" class="profile align-self-center">
-                  <v-img v-if="userProfileInForm.image" :src="userProfileInForm.image" alt="user profile"></v-img>
+                <v-avatar v-bind="props" size="150" class="profile align-self-center" elevation="24">
+                  <v-img v-if="userProfileInForm.image" :src="userProfileInForm.image" alt="user profile" cover></v-img>
                   <span v-else class="text-h2 text-white">{{ initials }}</span>
 
                   <input @change="imageUpload($event)" type="file" class="input-image" accept="image/png, image/jpeg" />
@@ -78,9 +78,9 @@
   <uploading-progress v-model="showProgress" :uploadValue="uploadValue"></uploading-progress>
 
   <!-- Alert update success -->
-  <base-alert v-model="updateSuccess">
+  <base-alert v-model="updateSuccess" @hide-snackbar="updateSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Updated profile successfully.</h6>
+    <h5 class="mt-2">Updated profile successfully.</h5>
   </base-alert>
 </template>
 
@@ -118,7 +118,8 @@ const v$ = useVuelidate(rules, userProfileInForm);
 
 const save = async () => {
   if (v$.value.$errors.length === 0) {
-    await updateProfile(userProfileInForm.value);
+    const { user_id, first_name, last_name, gender, email, image } = userProfileInForm.value;
+    await updateProfile({ user_id, first_name, last_name, gender, email, image });
     if (!errMessage.value) {
       emit("closeForm");
     }

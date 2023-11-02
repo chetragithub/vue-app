@@ -11,22 +11,22 @@ export const useReportsStore = defineStore("reports", {
   actions: {
     async getProductReports(month, year) {
       try {
-        const res = await http.get(`product_report/${month}/${year}`);
+        const res = await http.get(`reports/product?month=${month}&year=${year}`);
         if (res.data.success) {
           this.productReports = res.data.data;
         }
       } catch (err) {
-        console.log(err);
+        return err;
       }
     },
     async getMoneyReports(year) {
       try {
-        const res = await http.get(`reports?year=${year}`);
+        const res = await http.get(`reports/money?year=${year}`);
         if (res.data.success) {
           this.moneyReports = res.data.data;
         }
       } catch (err) {
-        console.log(err);
+        return err;
       }
     },
   },

@@ -46,8 +46,8 @@ export const useTableStore = defineStore("table", {
       try {
         const res = await http.delete(`tables/${id}`);
         if (res.data.success) {
+          this.tables = this.tables.filter((r) => r._id !== id);
           this.deleteSuccess = true;
-          this.getTables();
         }
       } catch (err) {
         return err;

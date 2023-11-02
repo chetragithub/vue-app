@@ -4,7 +4,7 @@
             <div class="d-flex text-center flex-column align-center justify-center">
                 <v-icon icon="mdi-shield-lock" class="logo mb-4 text-red-accent-2"></v-icon>
                 <h2>Reset a new password</h2>
-                <span>Please create a new password for <span class="text-red-accent-2">{{ $route.params.email
+                <span>Please create a new password for <span class="text-red-accent-2">{{ email
                 }}</span>.</span>
             </div>
             <div class="w-100 mt-4">
@@ -21,7 +21,7 @@
                     :error-messages="v$.confirmPassword.$errors.map((e) => e.$message)" @input="v$.confirmPassword.$touch"
                     @blur="v$.confirmPassword.$touch"></v-text-field>
             </div>
-            <primary-button @click="v$.$touch()" class="mt-2" block size="large" type="medium">
+            <primary-button @click="v$.$touch()" :disabled="success || fail" class="mt-2" block size="large" type="medium">
                 <v-icon icon="mdi-lock-reset" class="mr-2"></v-icon>
                 RESET
             </primary-button>
@@ -31,12 +31,12 @@
     <!-- Alert success -->
     <base-alert v-model="success">
         <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h6 class="mt-2">Reset a new password is successfully.</h6>
+        <h6 class="mt-2">Reset a new password is successfully. Please login.</h6>
     </base-alert>
 
     <!-- Alert fail -->
     <base-alert v-model="fail">
-        <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+        <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
         <h6 class="mt-2">Couldn't found your reset password link.</h6>
     </base-alert>
 </template>
@@ -50,6 +50,7 @@ import { required, minLength } from '@vuelidate/validators';
 // Variables
 const router = useRouter();
 const props = defineProps(['token', 'email']);
+const email = ref('unknown user')
 const success = ref(false);
 const fail = ref(false);
 const showPassword = ref(false);
@@ -79,38 +80,40 @@ const passwordConfirmationRule = () => {
 const reset = async () => {
     if (v$.value.$errors.length === 0 && passwordConfirmationRule() === true) {
         let resetData = {
-            email: props.email,
             token: props.token,
-            new_password: passwords.password
+            password: passwords.password
         };
         try {
-            const res = await http.post("/recover_password/reset", resetData);
+            const res = await http.post("auth/reset-pwd", resetData);
             if (res.data.success) {
                 success.value = true;
                 setTimeout(() => {
                     router.push('/login');
-                }, 1800);
+                }, 6000);
             }
         } catch (err) {
-            return err;
+            fail.value = true;
+            setTimeout(() => {
+                router.push('/login');
+            }, 5000);
         }
     }
 };
 // Lifecycle hook
 onBeforeMount(async () => {
     let resetData = {
-        email: props.email,
         token: props.token
     };
     // Check email and token reset password in database
     try {
-        await http.post("/recover_password/check", resetData);
+        const res = await http.post("/auth/check-pwd", resetData);
+        email.value = res.data.data.email;
     } catch (err) {
         if (!err.response.data.success) {
             fail.value = true;
             setTimeout(() => {
                 router.push('/login');
-            }, 1800);
+            }, 5000);
         }
     }
 })

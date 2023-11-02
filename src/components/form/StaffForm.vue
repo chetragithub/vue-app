@@ -42,7 +42,7 @@
                 @blur="v$.password.$touch"></v-text-field>
               <!--Select role field-->
               <v-select v-model="staffInForm.role_id" label="Role" :items="roles" :item-title="'name'"
-                item-value="_id" density="compact" class="mt-2 text-black" variant="outlined"
+                item-value="_id" density="compact" class="mt-2 text-black text-capitalize" variant="outlined"
                 :error-messages="v$.role_id.$errors.map((e) => e.$message)" @input="v$.role_id.$touch"
                 @blur="v$.role_id.$touch"></v-select>
             </v-row>

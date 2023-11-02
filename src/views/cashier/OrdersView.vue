@@ -38,6 +38,12 @@
       </summary-component>
     </v-main>
   </v-layout>
+
+  <!-- Alert message -->
+  <base-alert v-model="paidSuccess" @hide-snackbar="paidSuccess = false">
+    <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
+    <h5 class="mt-2">Order have paid successfully!</h5>
+  </base-alert>
 </template>
 
 <script setup>
@@ -51,7 +57,7 @@ import { defineProps } from "vue";
 // Variable
 defineProps(["title"]);
 const { getOrder } = useOrderStore();
-const { notPaidOrders } = storeToRefs(useOrderStore());
+const { notPaidOrders, paidSuccess } = storeToRefs(useOrderStore());
 const keyword = ref("");
 const menus = ref([
   {
@@ -60,7 +66,6 @@ const menus = ref([
     icon: "mdi-storefront-plus",
   },
 ]);
-
 
 const orders = computed(() => {
   if (!notPaidOrders.value.length === 0) return [];

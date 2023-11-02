@@ -11,18 +11,15 @@
       <main class="d-flex mt-3">
         <div class="w-100 d-flex flex-column">
           <!-- Select date -->
-          <div class="w-50">
-            <v-text-field
-              v-model="dateValue"
-              class="text-white"
-              variant="outlined"
-              density="compact"
-              type="month"
-              label="Select date"
-              @change="dateSelected"
-            ></v-text-field>
+          <div class="w-25 mb-3">
+            <vue-date-picker
+              :model-value="dateValue"
+              @update:model-value="dateSelected"
+              month-picker
+              dark
+            ></vue-date-picker>
           </div>
-          
+
           <!-- Chart : column bar-->
           <apexchart
             :class="[
@@ -79,18 +76,20 @@
 import { onMounted, ref, computed } from "vue";
 import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 // Variable
 const { getProductReports } = useReportsStore();
 const { productReports } = storeToRefs(useReportsStore());
 // Get current month and year
 const currentDate = new Date();
-const getMonth = (currentDate.getMonth() + 1).toLocaleString("en-US", {
+const getMonth = currentDate.getMonth().toLocaleString("en-US", {
   minimumIntegerDigits: 2,
   useGrouping: false,
 });
 const getYear = currentDate.getFullYear();
-const dateValue = ref(`${getYear}-${getMonth}`);
+const dateValue = ref({ month: getMonth, year: getYear });
 
 // Computed
 // Sum total product orders
@@ -167,15 +166,18 @@ const renderChart = () => {
 };
 
 // Seleted on date
-const dateSelected = async () => {
-  const date = new Date(dateValue.value);
-  await getProductReports(date.getMonth() + 1, date.getFullYear());
-  renderChart();
+const dateSelected = async (modelData) => {
+  if (modelData) {
+    dateValue.value = modelData;
+    console.log(modelData);
+    await getProductReports(modelData.month + 1, modelData.year);
+    renderChart();
+  }
 };
 
 // Lifecycle hook
 onMounted(async () => {
-  await getProductReports(getMonth, getYear);
+  await getProductReports(getMonth + 1, getYear);
   renderChart();
 });
 </script>

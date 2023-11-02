@@ -112,7 +112,9 @@
               <div class="d-flex align-center">
                 <h5 class="font-weight-bold">{{ customize.size }}</h5>
                 <v-spacer></v-spacer>
-                <h5 class="mr-6 font-weight-bold">${{ customize.price }}</h5>
+                <h5 class="mr-6 font-weight-bold">
+                  ${{ customize.price.toFixed(2) }}
+                </h5>
                 <v-icon
                   @click="addCustomize(productCustomize, customize)"
                   class="text-h4"
@@ -275,6 +277,12 @@
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
     <h5 class="mt-2">Please select food.</h5>
   </base-alert>
+
+  <!-- Alert success -->
+  <base-alert v-model="storeSuccess" @hide-snackbar="storeSuccess = false">
+    <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
+    <h5 class="mt-2">Ordered succeefully.</h5>
+  </base-alert>
 </template>
 
 <script setup>
@@ -284,9 +292,9 @@ import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
-// import { useCookieStore } from "@/stores/cookie";
 import { useTableStore } from "@/stores/table";
 import { storeToRefs } from "pinia";
+import { useOrderStore } from "@/stores/order";
 
 // Variables
 const { getProducts } = useProductStore();
@@ -296,6 +304,7 @@ const { userData } = storeToRefs(useUserStore());
 const { tables } = storeToRefs(useTableStore());
 const { products } = storeToRefs(useProductStore());
 const { categories } = storeToRefs(useCategoryStore());
+const { storeSuccess } = storeToRefs(useOrderStore());
 const router = useRouter();
 const keyword = ref("");
 const filterValue = ref(null);

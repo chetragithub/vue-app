@@ -31,11 +31,16 @@ const routes = [
     component: () => import("@/views/LoginView"),
   },
   {
+    path: "/store",
+    name: "store",
+    meta: { isSecure: true, auth: false},
+    component: () => import("@/views/StoreView"),
+  },
+  {
     path: "/manage_account",
     name: "manage_account",
-    meta: { isSecure: true, auth: false },
+    meta: { isSecure: true, auth: false},
     component: () => import("@/views/ManageAccountView"),
-    // beforeEnter: [loginRequired],
   },
   {
     path: "/change_password",
@@ -50,7 +55,7 @@ const routes = [
     component: () => import("@/views/RecoverPasswordView"),
   },
   {
-    path: "/reset_password/:token/:email",
+    path: "/reset_password/:token",
     name: "reset_password",
     component: () => import("@/views/ResetPasswordView"),
     props: true,

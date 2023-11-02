@@ -16,6 +16,7 @@
                   v-if="userData.image"
                   :src="userData.image"
                   :alt="userData.first_name"
+                  cover
                 ></v-img>
                 <span v-else class="text-h5 text-white">{{ initials }}</span>
               </v-avatar>
@@ -29,6 +30,7 @@
                     v-if="userData.image"
                     :src="userData.image"
                     :alt="userData.first_name"
+                    cover
                   ></v-img>
                   <span v-else class="text-h4 text-white">{{ initials }}</span>
                 </v-avatar>
@@ -37,11 +39,25 @@
                   {{ userData.email }}
                 </p>
                 <p
-                  class="font-inter cursor text-subtitle-1 mt-1"
+                  class="text-left ml-5 font-inter cursor text-subtitle-1"
+                  @click="$router.push('/store')"
+                >
+                  <v-icon icon="mdi-store-cog" color="white" size="small"></v-icon>
+                  Manage Store
+                </p>
+                <p
+                  class="text-left ml-5 font-inter cursor text-subtitle-1 mt-1"
                   @click="$router.push('/manage_account')"
                 >
                   <v-icon icon="mdi-cog" color="white" size="small"></v-icon>
                   Manage account
+                </p>
+                <p
+                  class="text-left ml-5 font-inter cursor text-subtitle-1"
+                  @click="$router.push('/change_password')"
+                >
+                  <v-icon icon="mdi-shield-lock-outline" color="white" size="small"></v-icon>
+                  Password
                 </p>
                 <v-divider class="my-3"></v-divider>
                 <div class="d-flex justify-center">

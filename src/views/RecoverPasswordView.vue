@@ -13,7 +13,7 @@
                     :error-messages="`${v$.email.$errors.map((e) => e.$message)}${errMessage}`"
                     @input="v$.email.$touch(); errMessage = '';" @blur="v$.email.$touch"></v-text-field>
             </div>
-            <primary-button :loading="loading" @click="v$.$touch()" class="mt-2" block size="large" type="medium">
+            <primary-button @click="v$.$touch()" :disabled="success" class="mt-2" block size="large" type="medium">
                 <v-icon icon="mdi-login-variant" class="mr-2"></v-icon>
                 SEND
             </primary-button>
@@ -22,9 +22,9 @@
     </div>
 
     <!-- Alert success -->
-    <base-alert v-model="success">
+    <base-alert v-model="success" @hide-snackbar="success = false">
         <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-        <h6 class="mt-2">Reset password link already send to your email.</h6>
+        <h6 class="mt-2">Reset password link send to your email successfully.</h6>
     </base-alert>
 </template>
 
@@ -39,7 +39,6 @@ import { ref } from "vue";
 // Variables
 const router = useRouter();
 const success = ref(false);
-const loading = ref(false);
 const errMessage = ref("");
 const initialsUser = {
     email: ""
@@ -55,19 +54,16 @@ const v$ = useVuelidate(rules, credential);
 // Method
 const send = async () => {
     if (v$.value.$errors.length === 0) {
-        loading.value = true;
         try {
-            const res = await http.post("recover_password", credential);
+            const res = await http.post("auth/send-pwd", credential);
             if (res.data.success) {
-                loading.value = false;
                 success.value = true;
                 setTimeout(() => {
                     router.push('/login');
-                }, 2000);
+                }, 6000);
             }
         } catch (err) {
-            loading.value = false;
-            if (err.response.data.message.email) {
+            if (err.response.status === 404) {
                 errMessage.value = "Invalid email address.";
             } else {
                 errMessage.value = 'Reset password link already send. Please check email.'

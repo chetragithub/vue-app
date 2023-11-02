@@ -1,12 +1,6 @@
 // Reference From : https://vuetifyjs.com/en/components/tables/
 
 <template>
-  <!-- Alert message -->
-  <base-alert v-model="paidSuccess" @hide-snackbar="paidSuccess = false">
-    <span class="mr-2 text-h4 mdi mdi-check-circle"></span>
-    <h5 class="mt-2">Order have paid successfully!</h5>
-  </base-alert>
-
   <!-- Dialog remove customize -->
   <base-dialog v-model="isComplete" title="Tips" ms="Are you sure you want to check?">
     <danger-button @click="isComplete = false">
@@ -195,7 +189,6 @@
 
 <script setup>
 import { useOrderStore } from "@/stores/order";
-import { storeToRefs } from "pinia";
 import { ref, defineProps, computed } from "vue";
 import printJS from "print-js";
 
@@ -207,7 +200,6 @@ const orderPrint = ref(null);
 const isComplete = ref(false);
 const orderClicked = ref(null);
 const { updateOrdersToPaid } = useOrderStore();
-const { paidSuccess } = storeToRefs(useOrderStore());
 
 // Computed
 // Total price for print

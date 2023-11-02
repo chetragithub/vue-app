@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-// import http from "@/http-common";
 import socket from "@/common/websocket/index";
 import { onMounted } from "vue";
 
@@ -18,16 +17,9 @@ const { getOrder, getOrdersNotCompleted } = useOrderStore();
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 const { userData } = storeToRefs(useUserStore());
-
-// import { storeToRefs } from "pinia";
-// import { useUserStore } from "@/stores/user";
-// import { useOneSignal } from '@onesignal/onesignal-vue3';
 import { ref } from "vue";
 
 // Variables
-// const { getUser } = useUserStore();
-// const { user } = storeToRefs(useUserStore());
-// const oneSignal = useOneSignal();
 const isNotification = ref(false);
 const msg = ref("");
 
@@ -36,32 +28,8 @@ document.title = "Restaurant Management System";
 let favicon = document.querySelector('link[rel="icon"]');
 favicon.setAttribute("href", require("@/assets/logo.png"));
 
-// On subscription change on OneSignal icon
-// oneSignal.on('subscriptionChange', async (isSubscribed) => {
-//   await getUser();
-//   // Only chef and cashier can be get notification from OneSignal
-//   if (user.value) {
-//     if (isSubscribed && (user.value.role.name === 'chef' || user.value.role.name === 'cashier')) {
-//       oneSignal.getUserId(async function (playerId) {
-//         try {
-//           const res = await http.post("onsignal", {
-//             player_id: playerId,
-//             user_id: user.value.user_id,
-//           });
-//           if (res.data.success) {
-//             console.log("You have subscribe to notification.");
-//           }
-//         } catch (err) {
-//           console.log(err);
-//         }
-//       });
-//     }
-//   }
-// });
-
 onMounted(() => {
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
+  socket.on("msg_to_client", (data) => {
     if (userData.value.store._id === data.store._id) {
       msg.value = data.msg;
       if (userData.value.role.name === "chef") {
@@ -72,8 +40,9 @@ onMounted(() => {
         getOrder();
       }
     }
-  };
+  });
 });
+
 </script>
 
 <style>

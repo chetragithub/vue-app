@@ -81,7 +81,7 @@ export const useUserStore = defineStore("user", {
     // Update staff
     async updateStaff(staff) {
       try {
-        const res = await http.put(`auth/staff/${staff.user_id}`, staff);
+        const res = await http.put(`auth/user/${staff.user_id}`, staff);
         if (res.data.success) {
           this.updateSuccess = true;
           this.errMessage = "";
@@ -97,28 +97,25 @@ export const useUserStore = defineStore("user", {
     async updateProfile(userUpdate) {
       // const { setCookie } = useCookieStore();
       try {
+        const { first_name, last_name, gender, image, email } = userUpdate;
         const res = await http.put(
-          `update_profile/${userUpdate.user_id}`,
+          `auth/user/${userUpdate.user_id}`,
           userUpdate
         );
         if (res.data.success) {
-          // let user = {
-          //   user_id: res.data.data.user_id,
-          //   first_name: res.data.data.first_name,
-          //   last_name: res.data.data.last_name,
-          //   gender: res.data.data.gender,
-          //   email: res.data.data.email,
-          //   image: res.data.data.image,
-          //   store: res.data.data.store,
-          // };
-          // setCookie("user", JSON.stringify(user), 30);
           this.updateSuccess = true;
           this.errMessage = "";
+          this.user.data.first_name = first_name;
+          this.user.data.last_name = last_name;
+          this.user.data.gender = gender;
+          this.user.data.image = image;
+          this.user.data.email = email;
         }
       } catch (err) {
-        if (err.response.data.message.email) {
+        if (err.response.status === 409) {
           this.errMessage = "The email has already been taken.";
         }
+        console.log(this.errMessage);
       }
     },
 
@@ -127,8 +124,8 @@ export const useUserStore = defineStore("user", {
       try {
         const res = await http.delete(`auth/staff/${id}`);
         if (res.data.success) {
+          this.staff = this.staff.filter((r) => r._id !== id);
           this.deleteSuccess = true;
-          this.getStaff();
         }
       } catch (err) {
         return err;
@@ -138,16 +135,28 @@ export const useUserStore = defineStore("user", {
   getters: {
     userData() {
       if (this.user.data) {
-        const { first_name, last_name, email, image, store_id, role_id } =
-          this.user.data;
+        const {
+          _id,
+          first_name,
+          last_name,
+          email,
+          image,
+          gender,
+          store_id,
+          role_id,
+        } = this.user.data;
         return {
+          user_id: _id,
           first_name: first_name,
           last_name: last_name,
           email: email,
           image: image,
+          gender,
           store: {
             _id: store_id ? store_id._id : "",
             name: store_id ? store_id.name : "",
+            city: store_id ? store_id.city : "",
+            street: store_id ? store_id.street : "",
           },
           role: {
             _id: role_id ? role_id._id : "",
@@ -156,12 +165,14 @@ export const useUserStore = defineStore("user", {
         };
       }
       return {
+        user_id: null,
         first_name: "",
         last_name: "",
         email: "",
         image: "",
+        gender: "",
         store: { id: null, name: "" },
-        role: { id: null, name: "" },
+        role: { id: null, name: "", city: "", street: "" },
       };
     },
   },

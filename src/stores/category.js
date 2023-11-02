@@ -46,8 +46,8 @@ export const useCategoryStore = defineStore("category", {
       try {
         const res = await http.delete(`categories/${id}`);
         if (res.data.success) {
+          this.categories = this.categories.filter((r) => r._id !== id);
           this.deleteSuccess = true;
-          this.getCategory();
         }
       } catch (err) {
         return err;

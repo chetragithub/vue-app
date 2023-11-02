@@ -16,34 +16,37 @@
         <div class="d-flex image-container ml-10 flex-column justify-center">
           <v-avatar size="200" class="profile align-self-center" elevation="24">
             <v-img
-              v-if="userData.image"
-              :src="userData.image"
-              :alt="userData.first_name"
+              :src="require('@/assets/store_logo.png')"
+              alt="Store logo"
               cover
             ></v-img>
-            <span v-else class="text-h2 text-white">{{ initials }}</span>
           </v-avatar>
           <div
             class="user-info align-self-center d-flex flex-column align-center text-center mt-3"
           >
             <div>
-              <h3 class="font-weight-bold">{{ userData.first_name }} {{ userData.last_name }}</h3>
-              <h5>{{ userData.email }}</h5>
+              <h3 class="font-weight-bold">{{ userData.store.name }}</h3>
+            </div>
+            <div class="bg-grey-lighten-1 w-auto rounded-xl mt-4 py-1 px-5">
+              <div>
+                <div class="mb-1">City / Town</div>
+                <div class="text-capitalize font-weight-bold">
+                  {{ userData.store.city }}
+                </div>
+              </div>
             </div>
             <div
-              class="d-flex justify-space-around bg-grey-lighten-1 w-100 rounded-xl mt-4 py-2 role"
+              class="bg-grey-lighten-1 w-auto rounded-xl mt-2 py-1 px-5 role"
             >
               <div>
-                <div class="mb-1">Role</div>
-                <div class="text-capitalize font-weight-bold">{{ userData.role.name === 'restaurant_owner'? 'owner' : userData.role.name }}</div>
-              </div>
-              <div>
-                <div class="mb-1">Gender</div>
-                <div class="text-capitalize font-weight-bold">{{ userData.gender }}</div>
+                <div class="mb-1">Street / Address</div>
+                <div class="text-capitalize font-weight-bold">
+                  {{ userData.store.street }}
+                </div>
               </div>
             </div>
 
-            <primary-button class="px-2 mt-4" @click="showEditForm">
+            <primary-button v-if="userData.role.name === 'restaurant_owner'" class="px-2 mt-4" @click="showEditForm">
               <v-icon
                 icon="mdi-square-edit-outline"
                 color="white"
@@ -56,41 +59,38 @@
       </div>
     </v-main>
   </v-layout>
-  <update-profile-form
-    :initials="initials"
+  <store-form
     :isShowForm="isShowForm"
     @closeForm="closeForm"
   />
 </template>
 <script setup>
+import StoreForm from "@/components/form/StoreForm.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user";
+import { useStoreStore } from "@/stores/store";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 
 // Variables
-const { clearProfileForm } = useUserStore();
-const { userData, userProfileInForm } = storeToRefs(useUserStore());
+const { userData } = storeToRefs(useUserStore());
+const { storeInForm } = storeToRefs(useStoreStore());
 const router = useRouter();
 const isShowForm = ref(false);
-const initials = ref(
-  userData.value.first_name.slice(0, 1).toUpperCase() +
-    userData.value.last_name.slice(0, 1).toUpperCase()
-);
 
 // Method
 const comeback = () => {
   router.go(-1);
 };
 const showEditForm = async () => {
-  userProfileInForm.value = { ...userData.value };
+  const { _id, name, city, street } = userData.value.store;
+  storeInForm.value = { store_id: _id, name, city, street };
   isShowForm.value = true;
 };
 
 // Close update profile form
 const closeForm = () => {
   isShowForm.value = false;
-  clearProfileForm();
 };
 </script>
 

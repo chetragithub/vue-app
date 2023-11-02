@@ -70,16 +70,18 @@ const onSubmit = async () => {
       const res = await http.post("auth/login", credentials);
       cookieStore.setCookie("user_token", res.data.token, 30);
       cookieStore.setCookie("user_role", res.data.user.role_id.name, 30);
-      let userObj = {
-        user_id: res.data.user._id,
-        first_name: res.data.user.first_name,
-        last_name: res.data.user.last_name,
-        gender: res.data.user.gender,
-        email: res.data.user.email,
-        image: res.data.user.image,
-        store: res.data.user.store_id,
-      };
-      user.value.data = userObj
+      // const { _id, first_name, last_name, gender, email, image, store_id, role_id} = res.data.user;
+      // let userObj = {
+      //   user_id: _id,
+      //   first_name: res.data.user.first_name,
+      //   last_name: res.data.user.last_name,
+      //   gender: res.data.user.gender,
+      //   email: res.data.user.email,
+      //   image: res.data.user.image,
+      //   store: res.data.user.store_id,
+      //   role: {name: res.data.user.role_id.name, },
+      // };
+      user.value.data = res.data.user
       // cookieStore.setCookie("user", JSON.stringify(userObj), 30);
       if (res.data.user.role_id.name === "restaurant_owner") {
         router.push("/");

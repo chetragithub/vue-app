@@ -3,7 +3,7 @@
     <div class="w-100 bg-grey-lighten-1">
       <v-icon
         @click="comeback"
-        class="text-h4 text-black ml-5"
+        class="text-h4 text-black ml-5 mt-3"
         icon="mdi-keyboard-backspace"
       ></v-icon>
     </div>
@@ -29,9 +29,7 @@
           prepend-inner-icon="mdi-lock-outline"
           variant="outlined"
           @click:append-inner="showCurrentPassword = !showCurrentPassword"
-          :error-messages="`${v$.currentPassword.$errors.map(
-            (e) => e.$message
-          )}${errMessage}`"
+          :error-messages="v$.currentPassword.$errors.map((e) => e.$message)"
           @input="v$.currentPassword.$touch"
           @blur="v$.currentPassword.$touch"
         ></v-text-field>
@@ -67,6 +65,7 @@
       </div>
       <primary-button
         @click="v$.$touch()"
+        :disabled="success"
         class="mt-2"
         block
         size="large"
@@ -79,22 +78,30 @@
   </div>
 
   <!-- Alert success -->
-  <base-alert v-model="success">
+  <base-alert v-model="success" @hide-snackbar="success = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h6 class="mt-2">Password changed successfully.</h6>
+    <h5 class="mt-2">Changed password successfully.</h5>
+  </base-alert>
+
+  <base-alert v-model="incorrectPwd" @hide-snackbar="incorrectPwd = false">
+    <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+    <h5 class="mt-2">Current password is incorrect.</h5>
   </base-alert>
 </template>
 
 <script setup>
 import http from "../http-common";
-import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required, minLength } from "@vuelidate/validators";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+import router from "@/router";
+
 // Variables
-const router = useRouter();
+const { userData } = storeToRefs(useUserStore());
 const success = ref(false);
-const errMessage = ref("");
+const incorrectPwd = ref(false);
 const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirm = ref(false);
@@ -125,26 +132,33 @@ const passwordConfirmationRule = () => {
 const change = async () => {
   if (v$.value.$errors.length === 0 && passwordConfirmationRule() === true) {
     let changePassword = {
-      current_password: passwords.currentPassword,
-      new_password: passwords.newPassword,
+      old_pwd: passwords.currentPassword,
+      new_pwd: passwords.newPassword,
     };
     try {
-      const res = await http.post("/changePassword", changePassword);
+      const res = await http.post("auth/change-pwd", changePassword);
       if (res.data.success) {
         success.value = true;
         setTimeout(() => {
-          router.push("/manage_account");
-        }, 1800);
+          router.push(
+            router.options.routes.find(
+              (r) =>
+                r.meta &&
+                r.meta.role === userData.value.role.name &&
+                r.meta.defaultPage
+            ).path
+          );
+        }, 4000);
       }
     } catch (err) {
-      if (err.response.data.message) {
-        errMessage.value = "Current password is incorrect.";
+      if (err.response.status === 400) {
+        incorrectPwd.value = true;
       }
     }
   }
 };
 const comeback = () => {
-  router.go(-2)
+  router.go(-1);
 };
 </script>
 

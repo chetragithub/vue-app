@@ -13,15 +13,25 @@
         <div class="w-100 d-flex flex-column">
           <!-- Tab of month  -->
           <!-- Select date -->
-          <div class="w-50">
-            <v-text-field v-model="year" @keyup="change" class="text-white" variant="outlined" density="compact"
-              type="number" label="Year"></v-text-field>
+          <div class="w-25 mb-3">
+            <vue-date-picker
+              :model-value="year"
+              @update:model-value="change"
+              year-picker
+              dark
+            ></vue-date-picker>
           </div>
 
-          <apexchart :class="[
-            moneyReports.length == 0 ? 'd-none' : '',
-            'bg-grey-darken-2 rounded-lg mr-2 text-black',
-          ]" height="485" type="bar" :options="options" :series="series"></apexchart>
+          <apexchart
+            :class="[
+              moneyReports.length == 0 ? 'd-none' : '',
+              'bg-grey-darken-2 rounded-lg mr-2 text-black',
+            ]"
+            height="485"
+            type="bar"
+            :options="options"
+            :series="series"
+          ></apexchart>
 
           <!-- No product report -->
           <div v-if="moneyReports.length == 0" class="w-100">
@@ -31,14 +41,21 @@
         <!--Money summary -->
         <summary-component class="mt-2" title="Money Summary">
           <template v-slot:content>
-            <div v-for="moneyReport in moneyReports" :key="moneyReport"
-              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center">
+            <div
+              v-for="moneyReport in moneyReports"
+              :key="moneyReport"
+              class="bg-grey-darken-2 mt-2 rounded-lg d-flex justify-space-between align-center"
+            >
               <div class="w-50 card-summary py-2 m-2 rounded-lg text-center">
-                {{ getMonthName(moneyReport._id.month) }}
+                {{ getMonthName(moneyReport.month) }}
               </div>
-              <span class="mr-2">${{ Number(moneyReport.total_money).toFixed(2) }}</span>
+              <span class="mr-2"
+                >${{ Number(moneyReport.total_money).toFixed(2) }}</span
+              >
             </div>
-            <div class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center">
+            <div
+              class="bg-grey-darken-2 mt-4 py-3 rounded-lg d-flex justify-space-between align-center"
+            >
               <span class="ml-2">Total</span>
               <span class="mr-2">${{ totalMoney.toFixed(2) }}</span>
             </div>
@@ -52,6 +69,8 @@
 import { computed, onMounted, ref } from "vue";
 import { useReportsStore } from "@/stores/reports";
 import { storeToRefs } from "pinia";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
 // Variables
 const { getMoneyReports } = useReportsStore();
@@ -63,8 +82,8 @@ const year = ref(currentYear);
 const filter = (array, key) => {
   let items = [];
   array.filter(function (value) {
-    if (key === 'month') {
-      items.push(getMonthName(value._id[key]));
+    if (key === "month") {
+      items.push(getMonthName(value[key]));
     } else {
       items.push(Number(value[key]));
     }
@@ -76,8 +95,8 @@ const filter = (array, key) => {
 const getMonthName = (monthNumber) => {
   const date = new Date(`${year.value}-${monthNumber}-1`);
   date.setMonth(monthNumber - 1);
-  return date.toLocaleString('en-US', { month: 'long' });
-}
+  return date.toLocaleString("en-US", { month: "long" });
+};
 
 const options = ref({
   plotOptions: {
@@ -139,10 +158,13 @@ const renderChart = () => {
   series.value[0].data = filter(moneyReports.value, "total_money");
 };
 
-const change = async () => {
-  await getMoneyReports(year.value);
-  renderChart();
-}
+const change = async (value) => {
+  if (value) {
+    year.value = value
+    await getMoneyReports(value);
+    renderChart();
+  }
+};
 // Lifecycle hook
 onMounted(async () => {
   await getMoneyReports(year.value);

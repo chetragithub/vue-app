@@ -109,7 +109,7 @@ export const useProductStore = defineStore("product", {
       try {
         const res = await http.delete(`products/${product_id}`);
         if (res.data.success) {
-          this.getProducts();
+          this.products = this.products.filter((r) => r._id !== product_id);
           this.deleteSuccess = true;
         }
       } catch (err) {
