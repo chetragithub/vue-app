@@ -177,7 +177,7 @@ const dateSelected = async (modelData) => {
 
 // Lifecycle hook
 onMounted(async () => {
-  await getProductReports(getMonth + 1, getYear);
+  await getProductReports(Number(getMonth) + 1, getYear);
   renderChart();
 });
 </script>
