@@ -63,8 +63,8 @@
   </v-layout>
 
   <!-- A product customize -->
-  <v-card v-if="productCustomize" class="overflow-visible">
-    <v-layout>
+  <v-card v-if="productCustomize" class="overflow-visible d-zoom">
+    <v-layout class="d-zoom">
       <v-navigation-drawer
         v-model="isCustomize"
         class="customize-drawer bg-grey-darken-2 h-auto rounded-t-lg"
@@ -72,7 +72,7 @@
         permanent
         location="bottom"
       >
-        <v-card class="mx-auto rounded-t-lg bg-grey-darken-2">
+        <v-card class="mx-auto rounded-t-lg bg-grey-darken-2 d-zoom">
           <v-card-item class="bg-red-accent-2">
             <v-card-title>
               <span class="text-h5">{{ productCustomize.name }}</span>
@@ -160,8 +160,8 @@
   </v-layout>
 
   <!-- My cart -->
-  <v-card v-if="myCart.length > 0">
-    <v-layout class="overflow-visible">
+  <v-card v-if="myCart.length > 0" class="d-zoom">
+    <v-layout class="overflow-visible d-zoom">
       <v-navigation-drawer
         v-model="isCart"
         class="cart-drawer bg-grey-darken-2 rounded-t-lg"

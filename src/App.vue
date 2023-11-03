@@ -42,7 +42,6 @@ onMounted(() => {
     }
   });
 });
-
 </script>
 
 <style>
@@ -68,5 +67,9 @@ body {
 
 #onesignal-bell-launcher {
   display: none;
+}
+
+.d-zoom {
+  touch-action: pan-y !important;
 }
 </style>
