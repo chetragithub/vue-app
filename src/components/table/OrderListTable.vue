@@ -43,7 +43,7 @@
   <!-- Dialog of confirm order -->
   <v-dialog v-model="dialog" persistent width="600">
     <v-card class="rounded-lg">
-      <v-card-title class="bg-red-accent-2 text-center">Confirm Orders</v-card-title>
+      <v-card-title class="bg-red-accent-2 text-center">Order Details</v-card-title>
       <v-card-text>
         <div class="d-flex text-darken-4">
           <h6>ID:</h6>
