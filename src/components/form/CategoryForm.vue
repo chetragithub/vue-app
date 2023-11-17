@@ -5,7 +5,7 @@
         <span v-if="categoryInForm.category_id" class="text-h6"
           >Update category</span
         >
-        <span v-else class="text-h6">Create new category</span>
+        <span v-else class="text-h6 font-inter">{{ $t('app.crud.category.form.title') }}</span>
       </v-card-title>
       <div>
         <v-col class="mt-2" cols="12">
@@ -15,7 +15,7 @@
             class="mt-2 text-black"
             variant="outlined"
             density="compact"
-            label="Name"
+            :label="$t('app.crud.category.form.name')"
             :error-messages="`${v$.name.$errors.map(
               (e) => e.$message
             )}${errMessage}`"
@@ -34,8 +34,9 @@
               color="white"
               size="large"
             ></v-icon>
-
-            CLOSE
+            <span class="text-uppercase">
+              {{ $t('app.btn.close') }}
+            </span>
           </danger-button>
           <primary-button
             @click="
@@ -48,7 +49,9 @@
               color="white"
               size="large"
             ></v-icon>
-            SAVE
+            <span class="text-uppercase">
+              {{ $t('app.btn.save') }}
+            </span>
           </primary-button>
         </v-card-actions>
       </div>

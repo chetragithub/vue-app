@@ -1,0 +1,25 @@
+{
+  "search": "Search for product...",
+  "selectTable": "Select table",
+  "all": "All",
+  "product": "products",
+  "size": "Size",
+  "price": "Price",
+  "cart": "Cart",
+  "conformOrder": "Conform Order",
+  "table": "Table",
+  "summary": "Order summary",
+  "btn": {
+    "customize": "Customize",
+    "total": "Total",
+    "order": "Order Now"
+  },
+  "dialog": {
+    "deleteCustom": "Are you sure you don't want it?"
+  },
+  "alert": {
+    "orderSuccess": "Ordered succeefully.",
+    "selectFood": "Please select food!",
+    "selectTable": "Please select table!"
+  }
+}

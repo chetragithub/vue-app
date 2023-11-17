@@ -25,6 +25,6 @@ defineProps(['menus']);
   background: #F25657;
 }
 .font-inter {
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
 }
 </style>

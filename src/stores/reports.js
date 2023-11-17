@@ -11,7 +11,9 @@ export const useReportsStore = defineStore("reports", {
   actions: {
     async getProductReports(month, year) {
       try {
-        const res = await http.get(`reports/product?month=${month}&year=${year}`);
+        const res = await http.get(
+          `reports/product?month=${month}&year=${year}`
+        );
         if (res.data.success) {
           this.productReports = res.data.data;
         }
@@ -28,6 +30,18 @@ export const useReportsStore = defineStore("reports", {
       } catch (err) {
         return err;
       }
+    },
+  },
+  getters: {
+    totalProduct() {
+      return this.productReports.reduce((accumulator, r) => {
+        return accumulator + r.total_orders;
+      }, 0);
+    },
+    totalMoney() {
+      return this.moneyReports.reduce((accumulator, r) => {
+        return accumulator + r.total_money;
+      }, 0);
     },
   },
 });

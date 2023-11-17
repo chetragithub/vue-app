@@ -9,8 +9,8 @@ export async function isUserLogin() {
   const { getCookie } = useCookieStore();
   const token = getCookie("user_token");
   if (!token) return { login: isLogin };
-  if (token && !user.token) {
-    user.token = token;
+  if (token && !user.value.token) {
+    user.value.token = token;
     isRefresh = true;
   }
   isLogin = true;

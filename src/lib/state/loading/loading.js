@@ -6,17 +6,4 @@ export const useLoadingStore = defineStore("loading", {
       isLoading: false,
     };
   },
-  // actions: {
-  //   async getRoles() {
-  //     try {
-  //       const res = await http.get('roles');
-  //       if (res.data.success) {
-  //         this.roles = res.data.data;
-  //       }
-  //     } catch (err) {
-  //       return err;
-  //     }
-  //   }
-  // },
-  
 });

@@ -4,33 +4,78 @@
     <div class="login-form d-flex justify-center align-center">
       <v-form @submit.prevent="onSubmit" class="form w-100 px-8 py-10">
         <div class="d-flex justify-center">
-          <v-icon icon="mdi-shield-account-outline" class="logo text-red-accent-2"></v-icon>
+          <v-icon
+            icon="mdi-shield-account-outline"
+            class="logo text-red-accent-2"
+          ></v-icon>
         </div>
         <div class="mt-4">
-          <v-text-field class="text-black" v-model="credentials.email" density="compact" placeholder="Email address"
-            type="email" prepend-inner-icon="mdi-email-outline" variant="outlined"
-            :error-messages="`${v$.email.$errors.map((e) => e.$message)}${errMessage}`" @input="v$.email.$touch"
-            @blur="v$.email.$touch"></v-text-field>
+          <v-text-field
+            class="text-black placeholer-capitalize"
+            v-model="credentials.email"
+            density="compact"
+            :placeholder="$t('app.auth.email')"
+            type="email"
+            prepend-inner-icon="mdi-email-outline"
+            variant="outlined"
+            :error-messages="`${v$.email.$errors.map(
+              (e) => e.$message
+            )}${errMessage}`"
+            @input="v$.email.$touch"
+            @blur="v$.email.$touch"
+            @keyup="errMessage = ''"
+          ></v-text-field>
         </div>
 
         <div>
           <div class="text-medium-emphasis d-flex align-center justify-end">
-            <span class="text-subtitle-1 cursor text-blue" @click="$router.push('/recover_password')">
-              Forgot password?</span>
+            <span
+              class="text-subtitle-1 cursor text-blue font-inter"
+              @click="$router.push('/recover_password')"
+            >
+              {{ $t("app.auth.forgot.forgot") }}</span
+            >
           </div>
-          <v-text-field class="text-black" v-model="credentials.password"
-            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'" :type="showPassword ? 'text' : 'password'"
-            density="compact" placeholder="Enter your password" prepend-inner-icon="mdi-lock-outline" variant="outlined"
+          <v-text-field
+            class="text-black"
+            v-model="credentials.password"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="showPassword ? 'text' : 'password'"
+            density="compact"
+            :placeholder="$t('app.auth.password')"
+            prepend-inner-icon="mdi-lock-outline"
+            variant="outlined"
             @click:append-inner="showPassword = !showPassword"
-            :error-messages="v$.password.$errors.map((e) => e.$message)" @input="v$.password.$touch"
-            @blur="v$.password.$touch"></v-text-field>
+            :error-messages="v$.password.$errors.map((e) => e.$message)"
+            @input="v$.password.$touch"
+            @blur="v$.password.$touch"
+          ></v-text-field>
         </div>
-        <primary-button @click="v$.$touch()" class="mt-2" block size="large" type="medium">
+        <primary-button
+          @click="v$.$touch()"
+          class="mt-2 text-uppercase"
+          block
+          size="large"
+          type="medium"
+        >
           <v-icon icon="mdi-login-variant" class="mr-2"></v-icon>
-          LOG IN
+          {{ $t("app.auth.login") }}
         </primary-button>
       </v-form>
     </div>
+    <!-- <div style="position: fixed; right: 0" class="mr-7 d-flex gap-2">
+      <flag iso="gb" style="width: 25px"/>
+      <flag iso="kh" style="width: 25px"/>
+      <v-switch
+        v-model="switchLang"
+        hide-details
+        inset
+        class="text-dark"
+        true-icon="mdi-alpha-k-circle"
+        false-icon="mdi-alpha-e-circle"
+      ></v-switch>
+      <flag :iso="switchLang? 'gb' : 'kh'" style="width: 26px;"/>
+    </div> -->
   </div>
 </template>
 
@@ -41,14 +86,16 @@ import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, helpers } from "@vuelidate/validators";
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-
+import { t } from "../plugins/i18n";
+// import { changeLang } from "../mixins/method";
 // Variable
 const { user } = storeToRefs(useUserStore());
 const cookieStore = useCookieStore();
 const router = useRouter();
+// const switchLang = ref(localStorage.getItem("lng") === "kh" ? true : false);
 const showPassword = ref(false);
 const errMessage = ref("");
 const initialsUser = {
@@ -59,8 +106,13 @@ const credentials = reactive({
   ...initialsUser,
 });
 const rules = {
-  email: { required, email },
-  password: { required },
+  email: {
+    required: helpers.withMessage(t("app.rules.required"), required),
+    email: helpers.withMessage(t("app.rules.email"), email),
+  },
+  password: {
+    required: helpers.withMessage(t("app.rules.required"), required),
+  },
 };
 const v$ = useVuelidate(rules, credentials);
 
@@ -81,7 +133,8 @@ const onSubmit = async () => {
       //   store: res.data.user.store_id,
       //   role: {name: res.data.user.role_id.name, },
       // };
-      user.value.data = res.data.user
+      user.value.data = res.data.user;
+      user.value.token = res.data.token;
       // cookieStore.setCookie("user", JSON.stringify(userObj), 30);
       if (res.data.user.role_id.name === "restaurant_owner") {
         router.push("/");
@@ -90,7 +143,7 @@ const onSubmit = async () => {
       }
     } catch (err) {
       if (err.response.data.message) {
-        errMessage.value = 'Invalid email or password.';
+        errMessage.value = t("app.rules.loginFail");
       }
     }
   }
@@ -100,6 +153,10 @@ const onSubmit = async () => {
 <style>
 #onesignal-bell-launcher {
   display: none !important;
+}
+
+.font-inter {
+  font-family: "Inter", "Noto Serif Khmer", sans-serif, serif !important;
 }
 
 .login-form {

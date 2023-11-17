@@ -7,7 +7,7 @@
         class="search text-white rounded-lg"
         density="compact"
         variant="solo-none"
-        label="Search for product..."
+        :label="$t('waiter.search')"
         append-inner-icon="mdi-magnify"
         single-line
         hide-details
@@ -21,7 +21,7 @@
         color="red-accent-2"
         align-tabs="center"
       >
-        <v-tab :value="'all'">All</v-tab>
+        <v-tab :value="'all'">{{ $t("waiter.all") }}</v-tab>
         <v-tab
           v-for="category in categories"
           :key="category._id"
@@ -39,11 +39,11 @@
         :item-value="'table'"
         class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2"
         hide-details="auto"
-        label="Select table"
+        :label="$t('waiter.selectTable')"
       ></v-select>
 
-      <header class="text-center text-white text-h5 font-weight-bold">
-        PRODUCTS
+      <header class="text-center text-white text-h5 font-weight-bold font-inter">
+        {{ $t("waiter.product") }}
       </header>
 
       <!-- List products -->
@@ -57,7 +57,7 @@
       </div>
 
       <v-container v-else>
-        <h4 class="mt-5 text-center text-white">No product available.</h4>
+        <h4 class="mt-5 text-center text-white">{{ $t("app.noData") }}</h4>
       </v-container>
     </v-main>
   </v-layout>
@@ -99,9 +99,9 @@
           <v-list>
             <v-list-item append-icon="mdi-plus-none">
               <div class="d-flex">
-                <h5>Size:</h5>
+                <h5>{{ $t("waiter.size") }}:</h5>
                 <v-spacer></v-spacer>
-                <h5>Price:</h5>
+                <h5>{{ $t("waiter.price") }}:</h5>
               </div>
             </v-list-item>
 
@@ -147,14 +147,15 @@
           </v-avatar>
         </div>
         <h5 class="ml-2 mt-2">
-          Total: <span class="font-weight-bold">${{ totalPrice }}</span>
+          {{ $t("waiter.btn.total") }}:
+          <span class="font-weight-bold">${{ totalPrice }}</span>
         </h5>
       </div>
 
       <v-spacer></v-spacer>
 
       <primary-button @click="order" class="px-2">
-        <h6 class="font-weight-bold mt-2">Order Now</h6>
+        <h6 class="font-weight-bold mt-2">{{ $t("waiter.btn.order") }}</h6>
       </primary-button>
     </v-bottom-navigation>
   </v-layout>
@@ -172,7 +173,9 @@
         <v-card class="mx-auto bg-grey-darken-2 rounded-t-lg">
           <v-card-item class="bg-red-accent-2">
             <v-card-title>
-              <span class="text-h5">Cart ({{ totalFoods }})</span>
+              <span class="text-h5 font-inter"
+                >{{ $t("waiter.cart") }} ({{ totalFoods }})</span
+              >
             </v-card-title>
 
             <template v-slot:append>
@@ -214,7 +217,7 @@
                     <h6 class="font-weight-bold">
                       {{ customize.product.name }}
                     </h6>
-                    <span>Size / {{ customize.size }}</span>
+                    <span>{{ $t("waiter.size") }} / {{ customize.size }}</span>
                     <h5 class="font-weight-bold">
                       ${{ (customize.quantity * customize.price).toFixed(2) }}
                     </h5>
@@ -249,12 +252,12 @@
   <!-- Dialog remove customize -->
   <base-dialog
     v-model="isRemoveCustom"
-    title="Tips"
-    ms="Are you sure you don't want it?"
+    :title="$t('app.dialog.tips')"
+    :ms="$t('waiter.dialog.deleteCustom')"
   >
     <danger-button @click="isRemoveCustom = false">
       <v-icon icon="mdi-close-box-multiple" color="white" size="large"></v-icon>
-      Cancel
+      {{ $t("app.btn.cancel") }}
     </danger-button>
     <primary-button @click="removeCustomize(deleteCustomId)">
       <v-icon
@@ -262,26 +265,26 @@
         color="white"
         size="large"
       ></v-icon>
-      Confirm
+      {{ $t("app.btn.confirm") }}
     </primary-button>
   </base-dialog>
 
   <!-- Alert please selecet table -->
   <base-alert v-model="tableAlert" @hide-snackbar="tableAlert = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
-    <h5 class="mt-2">Please select table!</h5>
+    <h5 class="mt-2">{{ $t("waiter.alert.selectTable") }}</h5>
   </base-alert>
 
   <!-- Alert please selecet food -->
   <base-alert v-model="foodAlert" @hide-snackbar="foodAlert = false">
     <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
-    <h5 class="mt-2">Please select food!</h5>
+    <h5 class="mt-2">{{ $t("waiter.alert.selectFood") }}</h5>
   </base-alert>
 
   <!-- Alert success -->
   <base-alert v-model="storeSuccess" @hide-snackbar="storeSuccess = false">
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
-    <h5 class="mt-2">Ordered succeefully.</h5>
+    <h5 class="mt-2">{{ $t("waiter.alert.orderSuccess") }}</h5>
   </base-alert>
 </template>
 
@@ -451,6 +454,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.font-inter {
+  font-family: "Inter", "Noto Serif Khmer", sans-serif, serif !important;
+}
+
 .search {
   background: #2c2c2c;
 }

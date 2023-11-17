@@ -43,21 +43,21 @@
                   @click="$router.push('/store')"
                 >
                   <v-icon icon="mdi-store-cog" color="white" size="small"></v-icon>
-                  Manage Store
+                  {{ $t("app.header.sitting.manageStore") }}
                 </p>
                 <p
                   class="text-left ml-5 font-inter cursor text-subtitle-1 mt-1"
                   @click="$router.push('/manage_account')"
                 >
                   <v-icon icon="mdi-cog" color="white" size="small"></v-icon>
-                  Manage account
+                  {{ $t("app.header.sitting.manageAcc") }}
                 </p>
                 <p
                   class="text-left ml-5 font-inter cursor text-subtitle-1"
                   @click="$router.push('/change_password')"
                 >
                   <v-icon icon="mdi-shield-lock-outline" color="white" size="small"></v-icon>
-                  Password
+                  {{ $t("app.header.sitting.password") }}
                 </p>
                 <v-divider class="my-3"></v-divider>
                 <div class="d-flex justify-center">
@@ -67,7 +67,7 @@
                       color="white"
                       size="large"
                     ></v-icon>
-                    Log out
+                    {{ $t("app.auth.logout") }}
                   </danger-button>
                 </div>
               </div>
@@ -137,7 +137,7 @@ const logout = async () => {
 
 <style scoped>
 .font-inter {
-  font-family: "Inter", sans-serif !important;
+  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
 }
 .profile {
   background: #2c2c2c;

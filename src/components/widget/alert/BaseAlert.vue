@@ -9,8 +9,8 @@
       <slot></slot>
     </div>
     <template v-slot:actions>
-      <v-btn color="dark" variant="text" @click="$emit('hide-snackbar')">
-        Close
+      <v-btn color="dark" class="font-weight-bold" variant="text" @click="$emit('hide-snackbar')">
+        {{ $t("app.btn.close") }}
       </v-btn>
     </template>
   </v-snackbar>

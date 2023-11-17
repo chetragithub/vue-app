@@ -12,7 +12,7 @@
         <div class="d-flex mt-1">
             <v-spacer></v-spacer>
 
-            <primary-button @click="$emit('on-customize', product)">Customize</primary-button>
+            <primary-button @click="$emit('on-customize', product)">{{ $t('waiter.btn.customize') }}</primary-button>
         </div>
     </v-card>
 </template>

@@ -9,8 +9,10 @@ import firebaseConfig from "./firebase";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
+import i18n from "./plugins/i18n";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
+import FlagIcon from 'vue-flag-icon'
 
 // Import components
 import PrimaryButton from "@/components/widget/button/PrimaryButton";
@@ -87,12 +89,15 @@ app.component("uploading-progress", UploadingProgress);
 
 // Initialize firebase app
 firebase.initializeApp(firebaseConfig);
+app.config.productionTip = false
 
 // App uses
 app
   .use(VueApexCharts)
   // .use(OneSignal, oneSignalConfig)
+  .use(pinia)
+  .use(i18n)
   .use(vuetify)
   .use(router)
-  .use(pinia)
+  .use(FlagIcon)
   .mount("#app");

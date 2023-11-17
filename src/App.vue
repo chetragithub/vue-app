@@ -18,6 +18,7 @@ import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 const { userData } = storeToRefs(useUserStore());
 import { ref } from "vue";
+import i18n from "./plugins/i18n";
 
 // Variables
 const isNotification = ref(false);
@@ -41,16 +42,24 @@ onMounted(() => {
       }
     }
   });
+  document.addEventListener("keydown", (e) => {
+    if (e.shiftKey && e.ctrlKey && e.key === "L") {
+      i18n.global.locale = i18n.global.locale === "en" ? "kh" : "en";
+    }
+  });
 });
 </script>
-
-<style>
+<style lang="scss" src="./sass/app.scss"></style>
+<!-- <style lang="">
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khmer:wght@500&display=swap');
 
 * {
   padding: 0;
   margin: 0;
-  font-family: "Inter", sans-serif !important;
+  /* font-family: "Inter", sans-serif !important;
+  font-family: 'Noto Serif Khmer', serif !important; */
+  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
 }
 
 body {
@@ -58,7 +67,8 @@ body {
 }
 
 .font-inter {
-  font-family: "Inter", sans-serif !important;
+  /* font-family: "Inter", sans-serif !important; */
+  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
 }
 
 .active {
@@ -72,4 +82,4 @@ body {
 .d-zoom {
   touch-action: pan-y !important;
 }
-</style>
+</style> -->

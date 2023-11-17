@@ -21,7 +21,7 @@
     <!-- Left side bar -->
     <res-owner-side-bar></res-owner-side-bar>
     <v-main class="ml-2">
-      <header-component title="Manage category">
+      <header-component :title="$t('app.crud.category.title')">
       </header-component>
 
       <!-- Main container -->
@@ -33,35 +33,35 @@
               <!-- close dialo delete category -->
               <dark-button @click="onEdit(category)">
                 <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
-                Edit
+                {{ $t('app.btn.edit') }}
               </dark-button>
 
               <!-- delete category -->
               <danger-button @click="onDelete(category._id)">
                 <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
-                Delete
+                {{ $t('app.btn.delete') }}
               </danger-button>
             </div>
           </category-card>
         </div>
         <!-- list category empty -->
         <div class="w-100 text-center" v-else>
-          <h4 class="text-center mt-5 text-white">No category available.</h4>
+          <h4 class="text-center mt-5 text-white">{{ $t('app.noData') }}</h4>
         </div>
 
         <!-- Category Summary -->
-        <summary-component class="mt-2" title="Category Summary">
+        <summary-component class="mt-2" :title="$t('app.crud.category.summary')">
           <template v-slot:btn>
             <secondary-button @click="isShowForm = true">
               <v-icon icon="mdi-plus-box-multiple" color="white" size="large"></v-icon>
-              Add More
+              {{ $t('app.btn.add') }}
             </secondary-button>
           </template>
           <template v-slot:content>
             <div class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center">
-              <span class="ml-2">Total</span>
-              <span v-if="categories.length > 1" class="mr-2">{{ categories.length }} items</span>
-              <span v-else class="mr-2">{{ categories.length }} item</span>
+              <span class="ml-2">{{ $t('app.total') }}</span>
+              <span v-if="categories.length > 1" class="mr-2">{{ categories.length }} {{ $t('app.items') }}</span>
+              <span v-else class="mr-2">{{ categories.length }} {{ $t('app.item') }}</span>
             </div>
           </template>
         </summary-component>

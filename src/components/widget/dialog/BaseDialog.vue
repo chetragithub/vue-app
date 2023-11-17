@@ -1,7 +1,7 @@
 <template>
     <v-dialog transition="dialog-top-transition" width="auto">
         <v-card class="rounded-lg">
-            <v-toolbar class="text-h5 text-center pr-4" color="red-accent-2" :title="title"></v-toolbar>
+            <v-toolbar class="text-h5 text-center pr-4 font-inter" color="red-accent-2" :title="title"></v-toolbar>
             <div>
                 <v-card-text>
                     <div class="font-inter text-center text-h6 pa-5">{{ ms }}</div>
@@ -21,3 +21,9 @@ import { defineProps } from "vue";
 defineProps(["title", "ms"]);
 
 </script>
+
+<style scoped>
+.font-inter {
+  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
+}
+</style>

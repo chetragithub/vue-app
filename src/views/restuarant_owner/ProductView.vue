@@ -6,9 +6,9 @@
       <res-owner-side-bar></res-owner-side-bar>
 
       <!-- Header top -->
-      <header-component title="Manage product">
+      <header-component :title="$t('app.crud.product.title')">
         <v-text-field v-model="keyword" class="search text-white rounded-lg" density="compact"
-          variant="solo-none" label="Search for product..." append-inner-icon="mdi-magnify" single-line
+          variant="solo-none" :label="$t('owner.search')" append-inner-icon="mdi-magnify" single-line
           hide-details></v-text-field>
       </header-component>
 
@@ -16,7 +16,7 @@
       <main class="d-flex mt-1 mr-2">
         <div class="d-flex flex-column mr-2 w-100">
           <v-tabs v-model="filterValue" class="text-white mb-3" color="red-accent-2" align-tabs="center">
-            <v-tab :value="'all'">All</v-tab>
+            <v-tab :value="'all'">{{ $t('app.crud.product.all') }}</v-tab>
             <v-tab v-for="category in categories" :key="category._id" :value="category._id">{{
               category.name }}</v-tab>
           </v-tabs>
@@ -26,37 +26,37 @@
               <div class="d-flex justify-space-between align-center mt-2">
                 <dark-button @click="onEdit(product)">
                   <v-icon icon="mdi-square-edit-outline" color="white" size="large"></v-icon>
-                  Edit
+                  {{ $t('app.btn.edit') }}
                 </dark-button>
                 <danger-button @click="
                   isDelete = true;
                   deleteId = product._id;
                 ">
                   <v-icon icon="mdi-delete-forever" color="white" size="large"></v-icon>
-                  Delete
+                  {{ $t('app.btn.delete') }}
                 </danger-button>
               </div>
             </product-res-owner-card>
           </div>
 
           <div class="w-100 text-center" v-else>
-            <h4 class="text-center mt-5 text-white">No product available.</h4>
+            <h4 class="text-center mt-5 text-white">{{ $t('app.noData') }}</h4>
           </div>
         </div>
 
         <!-- Product Summary -->
-        <summary-component class="mt-2" title="Product Summary">
+        <summary-component class="mt-2" :title="$t('app.crud.product.summary')">
           <template v-slot:btn>
             <secondary-button @click="dialog = true">
               <v-icon icon="mdi-plus-box-multiple" color="white" size="large"></v-icon>
-              Add More
+              {{ $t('app.btn.add') }}
             </secondary-button>
           </template>
           <template v-slot:content>
             <div class="bg-grey-darken-2 mt-3 py-3 rounded-lg d-flex justify-space-between align-center">
-              <span class="ml-2">Total</span>
-              <span v-if="products.length > 1" class="mr-2">{{ products.length }} items</span>
-              <span v-else class="mr-2">{{ products.length }} item</span>
+              <span class="ml-2">{{ $t('app.total') }}</span>
+              <span v-if="products.length > 1" class="mr-2">{{ products.length }} {{ $t('app.items') }}</span>
+              <span v-else class="mr-2">{{ products.length }} {{ $t('app.item') }}</span>
             </div>
           </template>
         </summary-component>
