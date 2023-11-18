@@ -46,7 +46,7 @@
           <h5 v-else class="mt-2">{{ staff.length }} {{ $t('app.crud.staff.person')}}</h5>
         </div>
       </div>
-      <div @click="to('table')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
+      <div @click="to('sale')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
         <div class="w-50 d-flex flex-column align-center  card-summary py-2 m-2 rounded-lg text-center">
           <v-icon icon="mdi-chart-bar" color="white" size="x-large"></v-icon>
           <span class="mt-1">{{ $t('app.nav.sale') }}</span>
@@ -56,7 +56,7 @@
           <h5 v-else class="mt-2">{{ totalProduct }} {{ $t('app.item') }}</h5>
         </div>
       </div>
-      <div @click="to('table')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
+      <div @click="to('money')" class="cursor-pointer bg-grey-darken-2 rounded-lg d-flex justify-space-between align-center">
         <div class="w-50 d-flex flex-column align-center  card-summary py-2 m-2 rounded-lg text-center">
           <v-icon icon="mdi-finance" color="white" size="x-large"></v-icon>
           <span class="mt-1">{{ $t('app.nav.money') }}</span>
