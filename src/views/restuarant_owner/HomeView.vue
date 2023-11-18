@@ -62,7 +62,7 @@
           <span class="mt-1">{{ $t('app.nav.money') }}</span>
         </div>
         <div class="w-50 d-flex justify-center">
-          <h5 class="mt-2">{{ totalMoney }} {{ $t('app.currency') }}</h5>
+          <h5 class="mt-2">{{ totalMoney.toFixed(2) }} {{ $t('app.currency') }}</h5>
         </div>
       </div>
 
