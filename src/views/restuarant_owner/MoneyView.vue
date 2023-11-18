@@ -6,7 +6,7 @@
 
     <v-main class="ml-2">
       <!-- Header top -->
-      <header-component title="Manage Money"> </header-component>
+      <header-component :title="$t('app.crud.money.title')"> </header-component>
       <!-- Main container -->
       <main class="d-flex mt-3">
         <!-- <div class="w-75 d-flex flex-column"></div>  -->

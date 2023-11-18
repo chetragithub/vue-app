@@ -54,7 +54,7 @@
     },
     "category": {
       "title": "Category management",
-      "summary": "Product Summary",
+      "summary": "Category Summary",
       "form": {
         "title": "Create new category",
         "name": "Name"

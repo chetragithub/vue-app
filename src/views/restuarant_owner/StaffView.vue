@@ -6,7 +6,7 @@
     <!-- Main -->
     <v-main>
       <!--Header -->
-      <header-component title="Manage staff" />
+      <header-component :title="$t('app.crud.staff.title')" />
 
       <!--List staff card-->
       <div class="mt-3" v-if="staff.length > 0">

@@ -5,7 +5,7 @@
 
     <v-main class="ml-2">
       <!-- Header top -->
-      <header-component title="Sale report"></header-component>
+      <header-component :title="$t('app.crud.sale.title')"></header-component>
 
       <!-- Main container -->
       <main class="d-flex mt-3">

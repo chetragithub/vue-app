@@ -21,7 +21,7 @@
     <!-- Left side bar -->
     <res-owner-side-bar></res-owner-side-bar>
     <v-main class="ml-2">
-      <header-component title="Manage table">
+      <header-component :title="$t('app.crud.table.title')">
       </header-component>
 
       <!-- Main container -->
