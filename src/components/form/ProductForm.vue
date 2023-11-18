@@ -147,7 +147,7 @@
 // Import
 import http from '@/http-common';
 import firebase from "firebase";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useProductStore } from "@/stores/product";
 import { useCategoryStore } from "@/stores/category";
 import { storeToRefs } from "pinia";
@@ -157,7 +157,7 @@ import { required } from "@vuelidate/validators";
 // Variables
 const { storeProduct, updateProduct, resetProductForm } = useProductStore();
 const { dialog, productInForm, errProductCode } = storeToRefs(useProductStore());
-const { getCategory } = useCategoryStore();
+// const { getCategory } = useCategoryStore();
 const { categories } = storeToRefs(useCategoryStore());
 const showToolTip = ref(false);
 const imgPreview = ref(null);
@@ -324,9 +324,9 @@ const save = async () => {
 };
 
 // Lifecycle hook
-onMounted(() => {
-  getCategory();
-});
+// onMounted(() => {
+//   getCategory();
+// });
 </script>
 
 <style scoped>
