@@ -12,8 +12,10 @@
         <div class="mt-4">
           <v-text-field
             class="text-black placeholer-capitalize"
+            name="username"
             v-model="credentials.email"
             density="compact"
+            autofocus
             :placeholder="$t('app.auth.email')"
             type="email"
             prepend-inner-icon="mdi-email-outline"
@@ -21,6 +23,7 @@
             :error-messages="`${v$.email.$errors.map(
               (e) => e.$message
             )}${errMessage}`"
+            autocomplete="username"
             @input="v$.email.$touch"
             @blur="v$.email.$touch"
             @keyup="errMessage = ''"
@@ -38,6 +41,7 @@
           </div>
           <v-text-field
             class="text-black"
+            name="password"
             v-model="credentials.password"
             :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
             :type="showPassword ? 'text' : 'password'"
@@ -45,8 +49,9 @@
             :placeholder="$t('app.auth.password')"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
-            @click:append-inner="showPassword = !showPassword"
             :error-messages="v$.password.$errors.map((e) => e.$message)"
+            autocomplete="current-password"
+            @click:append-inner="showPassword = !showPassword"
             @input="v$.password.$touch"
             @blur="v$.password.$touch"
           ></v-text-field>

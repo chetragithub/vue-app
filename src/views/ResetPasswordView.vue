@@ -29,13 +29,13 @@
     </div>
 
     <!-- Alert success -->
-    <base-alert v-model="success">
+    <base-alert v-model="success" @hide-snackbar="success = false">
         <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
         <h6 class="mt-2">Reset a new password is successfully. Please login.</h6>
     </base-alert>
 
     <!-- Alert fail -->
-    <base-alert v-model="fail">
+    <base-alert v-model="fail" type="error" @hide-snackbar="fail = false">
         <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
         <h6 class="mt-2">Couldn't found your reset password link!</h6>
     </base-alert>

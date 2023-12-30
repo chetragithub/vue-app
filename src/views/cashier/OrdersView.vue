@@ -6,14 +6,13 @@
     <header-component title="Manage order">
       <v-text-field
         v-model="keyword"
-        class="search text-white rounded-lg"
+        class="text-white rounded-lg search"
         density="compact"
-        variant="solo-none"
+        variant="solo"
         label="Search for order..."
         append-inner-icon="mdi-magnify"
         single-line
         hide-details
-        @click:append-inner="console.log('search')"
       ></v-text-field>
     </header-component>
     <!------>
@@ -70,6 +69,8 @@ const menus = ref([
 const orders = computed(() => {
   if (!notPaidOrders.value.length === 0) return [];
   return notPaidOrders.value.filter((r) => {
+    const regex = /\\/;
+    if (regex.test(keyword.value)) return;
     if (
       r.table_id.table_number
         .toLowerCase()
@@ -90,8 +91,9 @@ onMounted(() => {
 </script>
 
 <style>
-.search {
-  background: #2c2c2c;
+.search .v-input__control .v-theme--light {
+  color: white;
+  background-color: #2c2c2c !important;
 }
 
 #onesignal-bell-launcher {

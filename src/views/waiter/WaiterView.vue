@@ -6,7 +6,7 @@
         v-model="keyword"
         class="search text-white rounded-lg"
         density="compact"
-        variant="solo-none"
+        variant="solo"
         :label="$t('waiter.search')"
         append-inner-icon="mdi-magnify"
         single-line
@@ -33,13 +33,13 @@
       <v-select
         v-model="table"
         :items="tables"
-        return-object="table"
-        @update:model-value="tableSelected"
+        return-object
         :item-title="'table_number'"
         :item-value="'table'"
         class="select-table ml-2 mb-2 rounded-lg text-white bg-grey-darken-2"
         hide-details="auto"
         :label="$t('waiter.selectTable')"
+        @update:model-value="tableSelected"
       ></v-select>
 
       <header class="text-center text-white text-h5 font-weight-bold font-inter">
@@ -270,14 +270,14 @@
   </base-dialog>
 
   <!-- Alert please selecet table -->
-  <base-alert v-model="tableAlert" @hide-snackbar="tableAlert = false">
-    <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+  <base-alert v-model="tableAlert" type="warning" @hide-snackbar="tableAlert = false">
+    <v-icon class="mr-2 text-h4 mdi mdi-alert-circle"></v-icon>
     <h5 class="mt-2">{{ $t("waiter.alert.selectTable") }}</h5>
   </base-alert>
 
   <!-- Alert please selecet food -->
-  <base-alert v-model="foodAlert" @hide-snackbar="foodAlert = false">
-    <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+  <base-alert v-model="foodAlert" type="warning" @hide-snackbar="foodAlert = false">
+    <v-icon class="mr-2 text-h4 mdi mdi-alert-circle"></v-icon>
     <h5 class="mt-2">{{ $t("waiter.alert.selectFood") }}</h5>
   </base-alert>
 
@@ -341,6 +341,8 @@ const producties = computed(() => {
           return true;
       }
     } else {
+      const regex = /\\/;
+      if (regex.test(keyword.value)) return;
       for (const key of keys) {
         if (r[key].toLowerCase().search(keyword.value.toLowerCase()) >= 0)
           return true;
@@ -458,8 +460,9 @@ onMounted(() => {
   font-family: "Inter", "Noto Serif Khmer", sans-serif, serif !important;
 }
 
-.search {
-  background: #2c2c2c;
+::v-deep .search .v-input__control .v-theme--light {
+  color: white;
+  background-color: #2c2c2c !important;
 }
 
 .cart-drawer,

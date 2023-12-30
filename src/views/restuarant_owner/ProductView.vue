@@ -7,8 +7,8 @@
 
       <!-- Header top -->
       <header-component :title="$t('app.crud.product.title')">
-        <v-text-field v-model="keyword" class="search text-white rounded-lg" density="compact"
-          variant="solo-none" :label="$t('owner.search')" append-inner-icon="mdi-magnify" single-line
+        <v-text-field v-model="keyword" class="text-white rounded-lg search" density="compact"
+          variant="solo" :label="$t('owner.search')" append-inner-icon="mdi-magnify" single-line
           hide-details></v-text-field>
       </header-component>
 
@@ -136,6 +136,8 @@ const producties = computed(() => {
           return true;
       }
     } else {
+      const regex = /\\/;
+      if (regex.test(keyword.value)) return;
       for (const key of keys) {
         if (r[key].toLowerCase().search(keyword.value.toLowerCase()) >= 0)
           return true;
@@ -178,7 +180,8 @@ onMounted(() => {
   background: #2c2c2c;
 }
 
-.search {
-  background: #2c2c2c;
+::v-deep .search .v-input__control .v-theme--light {
+  color: white;
+  background-color: #2c2c2c !important;
 }
 </style>

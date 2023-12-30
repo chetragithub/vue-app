@@ -28,7 +28,7 @@
               :error-messages="vp$.description.$errors.map((e) => e.$message)" @input="vp$.description.$touch"
               @blur="vp$.description.$touch"></v-textarea>
 
-            <v-switch v-model="productInForm.is_active" class="text-black" variant="outlined" required
+            <v-switch v-model="productInForm.is_active" class="text-black" inset variant="outlined" required
               color="orange-darken-4" label="Active" :error-messages="vp$.is_active.$errors.map((e) => e.$message)"
               @change="vp$.is_active.$touch" @blur="vp$.is_active.$touch"></v-switch>
           </div>
@@ -134,8 +134,8 @@
   </base-alert>
 
   <!-- Alert select image -->
-  <base-alert v-model="isNoImage" @hide-snackbar="isNoImage = false">
-    <v-icon class="mr-2 text-h4 mdi mdi-close-circle"></v-icon>
+  <base-alert v-model="isNoImage" type="warning" @hide-snackbar="isNoImage = false">
+    <v-icon class="mr-2 text-h4 mdi mdi-alert-circle"></v-icon>
     <h5 class="mt-2">Please upload image!</h5>
   </base-alert>
 
