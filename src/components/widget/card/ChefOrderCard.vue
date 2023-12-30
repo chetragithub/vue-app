@@ -2,7 +2,7 @@
   <v-card
     class="card rounded-lg bg-transparent"
   >
-    <div class="bg-grey-darken-2 rounded-lg">
+    <div v-if="order" class="bg-grey-darken-2 rounded-lg">
       <v-card-title class="d-flex justify-content-center p-2">
         <v-card-subtitle class="card-subtitle"
           ><v-icon class="mdi mdi-table" style="font-size: 18px"></v-icon>
@@ -27,10 +27,10 @@
             v-for="order_detail in order.order_details"
             :key="order_detail._id"
           >
-            <div>
+            <div v-if="order_detail.product_customize_id">
               <span style="font-size: 18px"
                 >Name :
-                {{ order_detail.product_customize_id.product_id.name }}</span
+                {{ order_detail.product_customize_id.product_id?.name }}</span
               ><br />
               <span style="font-size: 18px"
                 >Size: {{ order_detail.product_customize_id.size }}</span
