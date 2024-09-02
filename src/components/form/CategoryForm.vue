@@ -5,7 +5,9 @@
         <span v-if="categoryInForm.category_id" class="text-h6"
           >Update category</span
         >
-        <span v-else class="text-h6 font-inter">{{ $t('app.crud.category.form.title') }}</span>
+        <span v-else class="text-h6 font-inter">{{
+          $t("app.crud.category.form.title")
+        }}</span>
       </v-card-title>
       <div>
         <v-col class="mt-2" cols="12">
@@ -35,7 +37,7 @@
               size="large"
             ></v-icon>
             <span class="text-uppercase">
-              {{ $t('app.btn.close') }}
+              {{ $t("app.btn.close") }}
             </span>
           </danger-button>
           <primary-button
@@ -50,7 +52,7 @@
               size="large"
             ></v-icon>
             <span class="text-uppercase">
-              {{ $t('app.btn.save') }}
+              {{ $t("app.btn.save") }}
             </span>
           </primary-button>
         </v-card-actions>
@@ -59,48 +61,67 @@
   </v-dialog>
 </template>
 
-<script setup>
-import { defineProps, defineEmits, computed } from "vue";
+<script>
+import { computed, getCurrentInstance } from "vue";
 import { useCategoryStore } from "@/stores/category";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { storeToRefs } from "pinia";
 
-// Variables
-const { storeCategory, updateCategory, clearForm } = useCategoryStore();
-const { categoryInForm, errMessage } = storeToRefs(useCategoryStore());
-const emit = defineEmits(["closeForm"]);
-const props = defineProps(["isShowForm", "isUpdate"]);
+export default {
+  props: {
+    isShowForm: Boolean,
+    isUpdate: Boolean,
+  },
+  emits: ["closeForm"],
+  setup(props, { emit }) {
+    // data
+    const { categoryInForm, errMessage } = storeToRefs(useCategoryStore());
+    const instance = getCurrentInstance();
+    const rules = {
+      name: { required },
+    };
+    const v$ = useVuelidate(rules, categoryInForm);
 
-const rules = {
-  name: { required },
-};
-const v$ = useVuelidate(rules, categoryInForm);
-
-// methods
-const save = async () => {
-  if (categoryInForm.value.name) {
-    if (categoryInForm.value.category_id) {
-      await updateCategory(categoryInForm.value);
-    } else {
-      await storeCategory(categoryInForm.value);
+    // methods
+    const { storeCategory, updateCategory, clearForm } = useCategoryStore();
+    async function save() {
+      if (categoryInForm.value.name) {
+        if (categoryInForm.value.category_id) {
+          await updateCategory(categoryInForm.value);
+          instance.root.$notif("Update is success.", { type: "success" });
+        } else {
+          await storeCategory(categoryInForm.value);
+          instance.root.$notif("Create is success.", { type: "success" });
+        }
+        if (!errMessage.value) {
+          close();
+        }
+      }
     }
-    if (!errMessage.value) {
+    function close() {
+      clearForm();
+      v$.value.$reset();
+      errMessage.value = "";
       emit("closeForm");
-      close();
     }
-  }
-};
 
-const close = () => {
-  clearForm();
-  v$.value.$reset();
-  errMessage.value = "";
-  emit("closeForm");
-};
+    // computed
+    let dialog = computed(() => {
+      return props.isShowForm;
+    });
 
-// Computed
-let dialog = computed(() => {
-  return props.isShowForm;
-});
-</script> 
+    return {
+      // data
+      dialog,
+      categoryInForm,
+      errMessage,
+      v$,
+
+      // methods
+      save,
+      close,
+    };
+  },
+};
+</script>

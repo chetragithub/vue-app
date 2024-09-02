@@ -22,11 +22,11 @@ export const useOrderStore = defineStore("order", {
         const { userData } = storeToRefs(useUserStore());
         const res = await http.post("orders", order);
         if (res.data.success) {
-          this.storeSuccess = true;
           socket.emit("msg_to_server", {
             ...userData.value,
             msg: "Hello, you have a new order.",
           });
+          this.storeSuccess = true;
           return res.data.data;
         }
       } catch (err) {

@@ -6,23 +6,27 @@
     <v-icon class="mr-2 text-h4 mdi mdi-check-circle"></v-icon>
     <h5 class="mt-2">{{ msg }}</h5>
   </base-alert>
+  <Notif ref="notif" />
 </template>
 
 <script setup>
 import socket from "@/common/websocket/index";
-import { onMounted } from "vue";
-
+import { onMounted, getCurrentInstance } from "vue";
 import { useOrderStore } from "@/stores/order";
-const { getOrder, getOrdersNotCompleted } = useOrderStore();
-import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
-const { userData } = storeToRefs(useUserStore());
 import { ref } from "vue";
 import i18n from "./plugins/i18n";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+import Notif from "./lib/components/AppNotification.vue";
+
+const { getOrder, getOrdersNotCompleted } = useOrderStore();
+const { userData } = storeToRefs(useUserStore());
 
 // Variables
 const isNotification = ref(false);
 const msg = ref("");
+const notif = ref("");
+const rootInstance = getCurrentInstance();
 
 // Chang site title and icon
 document.title = "Booking Now";
@@ -47,39 +51,8 @@ onMounted(() => {
       i18n.global.locale = i18n.global.locale === "en" ? "kh" : "en";
     }
   });
+  rootInstance.root.$notif = notif.value.pushNotif;
 });
 </script>
+
 <style lang="scss" src="./sass/app.scss"></style>
-<!-- <style lang="">
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khmer:wght@500&display=swap');
-
-* {
-  padding: 0;
-  margin: 0;
-  /* font-family: "Inter", sans-serif !important;
-  font-family: 'Noto Serif Khmer', serif !important; */
-  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
-}
-
-body {
-  background: #2c2c2c !important;
-}
-
-.font-inter {
-  /* font-family: "Inter", sans-serif !important; */
-  font-family: "Inter", 'Noto Serif Khmer', sans-serif, serif !important;
-}
-
-.active {
-  background: #f25657;
-}
-
-#onesignal-bell-launcher {
-  display: none;
-}
-
-.d-zoom {
-  touch-action: pan-y !important;
-}
-</style> -->

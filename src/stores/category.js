@@ -33,7 +33,6 @@ export const useCategoryStore = defineStore("category", {
       try {
         const res = await http.post("categories", category);
         if (res.data.success) {
-          this.createSuccess = true;
           this.getCategory();
         }
       } catch (err) {
@@ -47,7 +46,6 @@ export const useCategoryStore = defineStore("category", {
         const res = await http.delete(`categories/${id}`);
         if (res.data.success) {
           this.categories = this.categories.filter((r) => r._id !== id);
-          this.deleteSuccess = true;
         }
       } catch (err) {
         return err;
@@ -60,7 +58,6 @@ export const useCategoryStore = defineStore("category", {
           category
         );
         if (res.data.success) {
-          this.updateSuccess = true;
           this.getCategory();
         }
       } catch (err) {
